@@ -1,16 +1,18 @@
-# darwin
+# benoit
 
-A new Flutter project.
+Algorithmically feed informative content to users.
 
-## Getting Started
+## TODO List
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+• Sign-up & Login flow
+    • Sign-up & Login pages
+    • Setup page
+    • Connection to Firebase
+    • Authentication setup
+    • Full integration
+• Recommendation algorithm
+    • SharedPreferences setup
+    • Connection to Firestore Database
+• UX Touches
+    • Loading screen
+    • Validation for repeat content
