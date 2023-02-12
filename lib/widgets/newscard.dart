@@ -20,10 +20,18 @@ class NewsCard extends StatelessWidget {
           future: SharedPreferences.getInstance(),
           builder: (context, sharedPreferencesSnapshot) {
             if (sharedPreferencesSnapshot.hasData) {
+
               SharedPreferences sharedPreferences = sharedPreferencesSnapshot.data as SharedPreferences;
+
               String preferences = sharedPreferences.getString('preferences') != null ? sharedPreferences.getString('preferences') as String : "";
-              int randomNumber = Random().nextInt(preferences.split(",").length);
-              String chosenTopic = preferences.split(",")[randomNumber];
+              String preferenceTitles = sharedPreferences.getString('preferenceTitles') != null ? sharedPreferences.getString('preferenceTitles') as String : "";
+
+              int randomNumber = Random().nextInt(preferences.split("•").length);
+
+              String chosenTopic = preferences.split("•")[randomNumber];
+              String topicTitle = preferenceTitles.split("•")[randomNumber];
+
+              print("Topic Titles:" + topicTitle);
 
               return FutureBuilder<String>(
           future: AIUtilities.requestResponse(
@@ -48,17 +56,17 @@ class NewsCard extends StatelessWidget {
                       top: 30,
                     ),
                   ),
-                  const Center(
+                  Center(
                     child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: SelectableText("Untitled",
-                          style: TextStyle(
+                      padding: const EdgeInsets.all(20),
+                      child: SelectableText(topicTitle,
+                          style: const TextStyle(
                             fontFamily: 'Poppins',
                             color: Colors.black,
                             fontWeight: FontWeight.w900,
                             fontSize: 26,
                           ),
-                          toolbarOptions: ToolbarOptions(copy: true)),
+                          toolbarOptions: const ToolbarOptions(copy: true)),
                     ),
                   ),
                   Padding(

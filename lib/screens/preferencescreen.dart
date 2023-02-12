@@ -90,17 +90,17 @@ class PreferencesScreenState extends State<PreferencesScreen>
                   PreferenceButton(
                     text: 'Architectural Feats',
                     sharedPreferences: sharedPreferences,
-                    promptDescription: 'an example fantastic architecture from around the globe. Include the history and the people behind the project.',
+                    promptDescription: 'one example of architecture design. Include the history and the people behind the project.',
                   ),
                   PreferenceButton(
                     text: 'Advertising Campaigns',
                     sharedPreferences: sharedPreferences,
-                    promptDescription: 'fantastic advertisement campaign that affected the world. Include the history and the people behind the project.',
+                    promptDescription: 'one example of an advertisement campaign that affected the world. Include the history and the people behind the project.',
                   ),
                   PreferenceButton(
                     text: 'Ballet Icons',
                     sharedPreferences: sharedPreferences,
-                    promptDescription: 'a popular Ballet Musician. Include the history and childhood of the person',
+                    promptDescription: 'a popular Ballet Dancer. Include the history and childhood of the person',
                   ),
                   PreferenceButton(
                     text: 'Mysteries',
@@ -110,7 +110,7 @@ class PreferencesScreenState extends State<PreferencesScreen>
                   PreferenceButton(
                     text: 'Global Foods',
                     sharedPreferences: sharedPreferences,
-                    promptDescription: 'a type of food found in the world. Include the history and the taste',
+                    promptDescription: 'one example of a food found in obscure places in the world. Include the ingredients and the taste profile',
                   ),
                   PreferenceButton(
                     text: 'Comic Book Characters',
@@ -120,7 +120,7 @@ class PreferencesScreenState extends State<PreferencesScreen>
                   PreferenceButton(
                     text: 'Popular Filmmakers',
                     sharedPreferences: sharedPreferences,
-                    promptDescription: 'a popular Filmmaker. Include the childhood, and filmmaking influences of the person',
+                    promptDescription: 'a popular Filmmaker. Include the childhood, and filmmaking influences of the person, but do not mention recent releases',
                   ),
                   PreferenceButton(
                     text: 'Historical Figures',
@@ -135,7 +135,7 @@ class PreferencesScreenState extends State<PreferencesScreen>
                   PreferenceButton(
                     text: 'Abnormal Laws',
                     sharedPreferences: sharedPreferences,
-                    promptDescription: 'a funny law that was or still is being followed somewhere in the world. Include the backstory of the law, and some convictions in the past.',
+                    promptDescription: 'a funny legal law that was or still is being followed somewhere in the world. Include the backstory of the law, and some convictions of the law in the past.',
                   ),
                 ],
               ),
