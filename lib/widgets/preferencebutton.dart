@@ -45,9 +45,6 @@ class PreferenceButton extends StatelessWidget {
                   : sharedPreferences.setString(
                       'preferenceTitles', text);
 
-              print(preferenceTitles);
-              print(preferences);
-
               btnColor = BenoitColors.jungleGreen[700] as Color;
             }
           },

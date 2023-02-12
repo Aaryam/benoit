@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.5
   flutter_launcher_icons: ^0.11.0
   shared_preferences: ^2.0.17
+  html: ^0.15.1
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,14 @@ flutter:
   assets:
    - assets/icons/icon.png
    - assets/gifs/loadingdots.gif
+   - assets/misc/content/celebrities.txt
+   - assets/misc/content/comic_characters.txt
+   - assets/misc/content/entrepreneurs.txt
+   - assets/misc/content/filmmakers.txt
+   - assets/misc/content/global_foods.txt
+   - assets/misc/content/historical_events.txt
+   - assets/misc/content/historical_figures.txt
+   - assets/misc/content/marketing_campaigns.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -34,14 +34,20 @@ class NewsCard extends StatelessWidget {
               print("Topic Titles:" + topicTitle);
 
               return FutureBuilder<String>(
-          future: AIUtilities.requestResponse(
-              'Write a wikipedia article with at most 450 words and at least 350 words, with 6 paragraphs of $chosenTopic. Make the writing clear, concise, with no repetitions, and without any references to this prompt.'),
+          future: ScrapingUtilities.getInformationBody(), //AIUtilities.requestResponse(
+              //'Write a wikipedia article with at most 450 words and at least 350 words, with 6 paragraphs of $chosenTopic. Make the writing clear, concise, with no repetitions, and without any references to this prompt.'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              String bodyContent =
-                  jsonDecode(snapshot.data as String)['choices'][0]['text']
+              String bodyContent = "";
+
+              if ((snapshot.data as String).isNotEmpty) {
+                bodyContent = jsonDecode(snapshot.data as String) != null ? jsonDecode(snapshot.data as String)['choices'][0]['text']
                       .toString()
-                      .trim();
+                      .trim() : "";
+              }
+              else {
+                print("Empty");
+              }
 
               return ListView(
                 physics: const BouncingScrollPhysics(),
