@@ -1,7 +1,8 @@
 import 'dart:convert';
-
+import 'dart:math';
 import 'package:benoit/misc/utilities.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewsCard extends StatelessWidget {
   final title;
@@ -15,14 +16,24 @@ class NewsCard extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(0),
-        child: FutureBuilder<String>(
-          // Write a wikipedia article of 300 words, with at least 3 paragraphs on the history and the life of only one specific interesting historical figure (such as a entrepreneur or serial killer) or historical event that might seem interesting (such as a war) and mention the name of the topic at the start. Make the writing thematic, with at least 3 paragraphs. Do not reference this prompt whatsoever, write as if it is a wikipedia article.
+        child: FutureBuilder<SharedPreferences>(
+          future: SharedPreferences.getInstance(),
+          builder: (context, sharedPreferencesSnapshot) {
+            if (sharedPreferencesSnapshot.hasData) {
+              SharedPreferences sharedPreferences = sharedPreferencesSnapshot.data as SharedPreferences;
+              String preferences = sharedPreferences.getString('preferences') != null ? sharedPreferences.getString('preferences') as String : "";
+              int randomNumber = Random().nextInt(preferences.split(",").length);
+              String chosenTopic = preferences.split(",")[randomNumber];
+
+              return FutureBuilder<String>(
           future: AIUtilities.requestResponse(
-              'Write a wikipedia article with at least 300 words, 3 paragraphs with a for a historical figure, event, business, etc. Make the writing clear and concise, with no references to this prompt.'),
+              'Write a wikipedia article with at most 450 words and at least 350 words, with 6 paragraphs of $chosenTopic. Make the writing clear, concise, with no repetitions, and without any references to this prompt.'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               String bodyContent =
-                  jsonDecode(snapshot.data as String)['choices'][0]['text'].toString().trim();
+                  jsonDecode(snapshot.data as String)['choices'][0]['text']
+                      .toString()
+                      .trim();
 
               return ListView(
                 physics: const BouncingScrollPhysics(),
@@ -40,15 +51,14 @@ class NewsCard extends StatelessWidget {
                   const Center(
                     child: Padding(
                       padding: EdgeInsets.all(20),
-                      child: SelectableText(
-                                "Untitled",
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 26,
-                                ),
-                              ),
+                      child: SelectableText("Untitled",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 26,
+                          ),
+                          toolbarOptions: ToolbarOptions(copy: true)),
                     ),
                   ),
                   Padding(
@@ -60,6 +70,9 @@ class NewsCard extends StatelessWidget {
                         color: Colors.black,
                         fontSize: 15,
                       ),
+                      onSelectionChanged: (selection, cause) {
+                        // selection
+                      },
                     ),
                   ),
                 ],
@@ -70,13 +83,23 @@ class NewsCard extends StatelessWidget {
             } else {
               return Center(
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  width: MediaQuery.of(context).size.height * 0.15,
-                  child: CircularProgressIndicator(
-                    color: BenoitColors.jungleGreen,
-                  ),
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  width: MediaQuery.of(context).size.height * 0.25,
+                  child: Image.asset(
+                        "assets/gifs/loadingdots.gif",
+                      ),
                 ),
               );
+            }
+          },
+        );
+            }
+            else if (sharedPreferencesSnapshot.hasError) {
+              print(sharedPreferencesSnapshot.error.toString());
+              return Text(sharedPreferencesSnapshot.error.toString());
+            }
+            else {
+              return Container();
             }
           },
         ),

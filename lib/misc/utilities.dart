@@ -5,14 +5,15 @@ import 'package:http/http.dart';
 class BenoitColors {
   static MaterialColor jungleGreen = const MaterialColor(0xFF4BA58D, <int, Color> {
     900: Color.fromARGB(255, 75, 165, 141),
-    800: Color.fromARGB(255, 75, 165, 141),
-    700: Color.fromARGB(255, 75, 165, 141),
-    600: Color.fromARGB(255, 75, 165, 141),
-    500: Color.fromARGB(255, 75, 165, 141),
-    400: Color.fromARGB(255, 75, 165, 141),
-    300: Color.fromARGB(255, 75, 165, 141),
-    200: Color.fromARGB(255, 75, 165, 141),
-    100: Color.fromARGB(255, 75, 165, 141),
+    800: Color.fromARGB(245, 75, 165, 141),
+    700: Color.fromARGB(235, 75, 165, 141),
+    600: Color.fromARGB(225, 75, 165, 141),
+    500: Color.fromARGB(215, 75, 165, 141),
+    400: Color.fromARGB(205, 75, 165, 141),
+    300: Color.fromARGB(195, 75, 165, 141),
+    200: Color.fromARGB(185, 75, 165, 141),
+    100: Color.fromARGB(175, 75, 165, 141),
+    50: Color.fromARGB(170, 75, 165, 141),
   });
 }
 
@@ -30,7 +31,7 @@ class AIUtilities {
     Map<String, dynamic> reqBody = {
       "prompt": prompt,
       "model": "text-davinci-001",
-      "max_tokens": 600,
+      "max_tokens": 800,
       "temperature": 0.8,
       "n": 1,
     };

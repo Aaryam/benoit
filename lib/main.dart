@@ -1,5 +1,5 @@
 import 'package:benoit/misc/utilities.dart';
-import 'package:benoit/screens/homescreen.dart';
+import 'package:benoit/screens/preferencescreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Benoit',
       theme: ThemeData(
-        primarySwatch: Colors.cyan,
+        primarySwatch: BenoitColors.jungleGreen,
       ),
-      home: const HomeScreen(title: 'Benoit'),
+      home: const PreferencesScreen(title: 'Benoit'),
     );
   }
 }
