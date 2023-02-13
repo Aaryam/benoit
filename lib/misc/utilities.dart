@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:html/parser.dart' as parser;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BenoitColors {
   static MaterialColor jungleGreen =
@@ -36,7 +37,7 @@ class AIUtilities {
       "prompt": prompt,
       "model": "text-davinci-002",
       "max_tokens": 800,
-      "temperature": 0.8,
+      "temperature": 0.2,
       "n": 1,
     };
 
@@ -68,7 +69,7 @@ class ScrapingUtilities {
       List<DOM.Element> data = document.getElementsByTagName('p');
 
       for (DOM.Element element in data) {
-        if (documentData.length < 2500) {
+        if (documentData.length < 3000) {
           documentData += "${element.text}";
         }
         else {
@@ -80,7 +81,7 @@ class ScrapingUtilities {
       print(documentData);
 
       finalResponse = await AIUtilities.requestResponse(
-          "Summarize this content with less than 400 words, starting with a good intro paragraph, ending with a good conclusion paragraph, and removing wiki references: $documentData");
+          "Summarize this content within 300 words with a proper intro paragraph of the topic: $documentData");
       return finalResponse;
     }
 
@@ -94,23 +95,60 @@ class ScrapingUtilities {
     return text.split("\n")[randomNumber];
   }
 
-  static String selectTheme() {
-    List<String> themes = [
-      "assets/misc/content/celebrities.txt",
-      "assets/misc/content/comic_characters.txt",
-      "assets/misc/content/entrepreneurs.txt",
-      "assets/misc/content/filmmakers.txt",
-      "assets/misc/content/global_foods.txt",
-      "assets/misc/content/historical_events.txt",
-      "assets/misc/content/historical_figures.txt",
-      "assets/misc/content/marketing_campaigns.txt"
-    ];
+  static String selectTheme(SharedPreferences sharedPreferences) {
+    List<String> themes = LocalStorageUtilities.getPreferences(sharedPreferences);
     int randomNumber = Random().nextInt(themes.length);
 
-    return themes[randomNumber];
+    return LocalStorageUtilities.getPreferenceTextFile(themes[randomNumber]);
   }
 
-  static Future<String> getInformationBody() async {
-    return ScrapingUtilities.getArticleData(await ScrapingUtilities.selectTopic(ScrapingUtilities.selectTheme()));
+  static Future<String> getInformationBody(SharedPreferences sharedPreferences) async {
+    return ScrapingUtilities.getArticleData(await ScrapingUtilities.selectTopic(ScrapingUtilities.selectTheme(sharedPreferences)));
+  }
+}
+
+class LocalStorageUtilities {
+
+  // PREFERENCES:
+  // "preferenceName•textfile|preferenceName1•textfile1"
+
+  static List<String> getPreferences(SharedPreferences sharedPreferences) {
+    String preferences = sharedPreferences.getString('preferences') ?? '';
+
+    List<String> preferenceList = preferences.split("|");
+
+    return preferenceList;
+  }
+
+  static Future<bool> addPreference(String preferenceName, String textFile, SharedPreferences sharedPreferences) {
+    String preferences = sharedPreferences.getString('preferences') ?? '';
+
+    preferences += preferences.isNotEmpty ? "|$preferenceName•$textFile" : "$preferenceName•$textFile";
+
+    return sharedPreferences.setString('preferences', preferences);
+  }
+
+  static String getPreferenceName(String preference) {
+    return preference.split("•")[0];
+  }
+
+  static String getPreferenceTextFile(String preference) {
+    return preference.split("•")[1];
+  }
+
+  static Future<bool> clearPreferences(SharedPreferences sharedPreferences) {
+    return sharedPreferences.setString('preferences', '');
+  }
+
+  static Future<bool> removePreference(String preference, SharedPreferences sharedPreferences) {
+    List<String> preferenceList = getPreferences(sharedPreferences);
+
+    for (var p in preferenceList) {
+      if (p == preference) {
+        preferenceList.remove(p);
+      }
+    }
+
+    return sharedPreferences.setString('preferences', preferenceList.join());
   }
 }

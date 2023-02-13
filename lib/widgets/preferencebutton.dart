@@ -4,65 +4,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceButton extends StatelessWidget {
   final String text;
-  final String promptDescription;
+  final String textFile;
   final SharedPreferences sharedPreferences;
 
   const PreferenceButton({
     required this.text,
     required this.sharedPreferences,
-    required this.promptDescription,
+    required this.textFile,
   });
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = false;
-    Color btnColor = BenoitColors.jungleGreen[900] as Color;
-
     return Container(
       decoration: BoxDecoration(
-        color: btnColor,
+        color: BenoitColors.jungleGreen,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: () {
-            if (btnColor == BenoitColors.jungleGreen[900]) {
-              String preferences =
-                  sharedPreferences.getString('preferences') ?? "";
-              preferences != ""
-                  ? sharedPreferences.setString(
-                      'preferences', "$preferences• $promptDescription")
-                  : sharedPreferences.setString(
-                      'preferences', promptDescription);
-
-              String preferenceTitles =
-                  sharedPreferences.getString('preferenceTitles') ?? "";
-              preferenceTitles != ""
-                  ? sharedPreferences.setString(
-                      'preferenceTitles', "$preferenceTitles• $text")
-                  : sharedPreferences.setString(
-                      'preferenceTitles', text);
-
-              btnColor = BenoitColors.jungleGreen[700] as Color;
-            }
+          onTap: () async {
+            await LocalStorageUtilities.addPreference(text, textFile, sharedPreferences);
           },
-          onLongPress: () {
-            sharedPreferences.setString('preferences', "");
-            String preferences =
-                sharedPreferences.getString('preferences') ?? "";
-
-             String preferenceTitles =
-                  sharedPreferences.getString('preferenceTitles') ?? "";
-              preferenceTitles != ""
-                  ? sharedPreferences.setString(
-                      'preferenceTitles', "")
-                  : sharedPreferences.setString(
-                      'preferenceTitles', "");
-
-                            print(preferenceTitles);
-              print(preferences);
+          onLongPress: () async {
+            await LocalStorageUtilities.clearPreferences(sharedPreferences);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
