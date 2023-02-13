@@ -31,13 +31,14 @@ class AIUtilities {
     final reqHeaders = {
       'Accept': 'text/event-stream',
       'Authorization': 'Bearer $API_KEY',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Charset': 'utf-8'
     };
     Map<String, dynamic> reqBody = {
       "prompt": prompt,
-      "model": "text-davinci-002",
+      "model": "text-davinci-003",
       "max_tokens": 800,
-      "temperature": 0.2,
+      "temperature": 0.4,
       "n": 1,
     };
 
@@ -60,7 +61,9 @@ class AIUtilities {
 class ScrapingUtilities {
   static Future<String> getArticleData(article) async {
     Response response = await Client()
-        .get(Uri.parse('https://en.wikipedia.org/wiki/' + article));
+        .get(Uri.parse('https://en.wikipedia.org/wiki/' + article), headers: {
+      'Charset': 'utf-8'
+    });
     String finalResponse = "";
     String documentData = "";
 
@@ -69,10 +72,9 @@ class ScrapingUtilities {
       List<DOM.Element> data = document.getElementsByTagName('p');
 
       for (DOM.Element element in data) {
-        if (documentData.length < 3000) {
+        if (documentData.length > -1) {
           documentData += "${element.text}";
-        }
-        else {
+        } else {
           break;
         }
       }
@@ -80,9 +82,9 @@ class ScrapingUtilities {
       documentData = documentData.toString().trim();
       print(documentData);
 
-      finalResponse = await AIUtilities.requestResponse(
-          "Summarize this content within 300 words with a proper intro paragraph of the topic: $documentData");
-      return finalResponse;
+      //finalResponse = await AIUtilities.requestResponse(
+      //    "$documentData \n Summarize while using paragraphs this content within 400 words");
+      return documentData;
     }
 
     return finalResponse;
@@ -96,19 +98,21 @@ class ScrapingUtilities {
   }
 
   static String selectTheme(SharedPreferences sharedPreferences) {
-    List<String> themes = LocalStorageUtilities.getPreferences(sharedPreferences);
+    List<String> themes =
+        LocalStorageUtilities.getPreferences(sharedPreferences);
     int randomNumber = Random().nextInt(themes.length);
 
     return LocalStorageUtilities.getPreferenceTextFile(themes[randomNumber]);
   }
 
-  static Future<String> getInformationBody(SharedPreferences sharedPreferences) async {
-    return ScrapingUtilities.getArticleData(await ScrapingUtilities.selectTopic(ScrapingUtilities.selectTheme(sharedPreferences)));
+  static Future<String> getInformationBody(
+      SharedPreferences sharedPreferences) async {
+    return ScrapingUtilities.getArticleData(await ScrapingUtilities.selectTopic(
+        ScrapingUtilities.selectTheme(sharedPreferences)));
   }
 }
 
 class LocalStorageUtilities {
-
   // PREFERENCES:
   // "preferenceName•textfile|preferenceName1•textfile1"
 
@@ -120,10 +124,13 @@ class LocalStorageUtilities {
     return preferenceList;
   }
 
-  static Future<bool> addPreference(String preferenceName, String textFile, SharedPreferences sharedPreferences) {
+  static Future<bool> addPreference(String preferenceName, String textFile,
+      SharedPreferences sharedPreferences) {
     String preferences = sharedPreferences.getString('preferences') ?? '';
 
-    preferences += preferences.isNotEmpty ? "|$preferenceName•$textFile" : "$preferenceName•$textFile";
+    preferences += preferences.isNotEmpty
+        ? "|$preferenceName•$textFile"
+        : "$preferenceName•$textFile";
 
     return sharedPreferences.setString('preferences', preferences);
   }
@@ -140,7 +147,8 @@ class LocalStorageUtilities {
     return sharedPreferences.setString('preferences', '');
   }
 
-  static Future<bool> removePreference(String preference, SharedPreferences sharedPreferences) {
+  static Future<bool> removePreference(
+      String preference, SharedPreferences sharedPreferences) {
     List<String> preferenceList = getPreferences(sharedPreferences);
 
     for (var p in preferenceList) {

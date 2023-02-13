@@ -31,12 +31,7 @@ class NewsCard extends StatelessWidget {
                     String bodyContent = "";
 
                     if ((snapshot.data as String).isNotEmpty) {
-                      bodyContent = jsonDecode(snapshot.data as String) != null
-                          ? jsonDecode(snapshot.data as String)['choices'][0]
-                                  ['text']
-                              .toString()
-                              .trim()
-                          : "";
+                      bodyContent = (snapshot.data as String).trim();
                     } else {
                       
                     }
