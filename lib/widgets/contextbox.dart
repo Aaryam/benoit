@@ -2,45 +2,49 @@ import 'package:benoit/misc/utilities.dart';
 import 'package:flutter/material.dart';
 
 class ContextBox extends StatelessWidget {
-  final contextText;
+  final String contextText;
 
   const ContextBox({super.key, required this.contextText});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        'Alert',
-        style: TextStyle(fontFamily: 'Poppins'),
+      title: Text(
+        contextText.replaceAll("_", " "),
+        style: const TextStyle(fontFamily: 'Poppins'),
       ),
-      content: SingleChildScrollView(
-        child: FutureBuilder<String>(
-          future: AIUtilities.requestResponse('Summarize this text within 50 words: $contextText'),
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data != null) {
+      content: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.25,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: FutureBuilder<String>(
+            future: ScrapingUtilities.getArticleBrief(contextText),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                String finalContextText = snapshot.data as String;
 
-              String finalContextText = snapshot.data as String;
-
-              return ListBody(
-                children: <Widget>[
-                  Text(
-                    finalContextText,
-                    style: const TextStyle(fontFamily: 'Poppins', fontSize: 14),
+                return ListBody(
+                  children: <Widget>[
+                    Text(
+                      finalContextText,
+                      style:
+                          const TextStyle(fontFamily: 'Poppins', fontSize: 14),
+                    ),
+                  ],
+                );
+              } else {
+                return Center(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    width: MediaQuery.of(context).size.height * 0.25,
+                    child: Image.asset(
+                      "assets/gifs/loadingdots.gif",
+                    ),
                   ),
-                ],
-              );
-            } else {
-              return Center(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  width: MediaQuery.of(context).size.height * 0.25,
-                  child: Image.asset(
-                    "assets/gifs/loadingdots.gif",
-                  ),
-                ),
-              );
-            }
-          },
+                );
+              }
+            },
+          ),
         ),
       ),
       actions: <Widget>[

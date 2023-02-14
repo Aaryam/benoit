@@ -71,7 +71,7 @@ class HomeScreenState extends State<HomeScreen>
               ClipboardData copyText = await Clipboard.getData('text/plain') as ClipboardData;
 
               showDialog(context: context, builder: (context) {
-                return ContextBox(contextText: copyText);
+                return ContextBox(contextText: copyText.text as String);
               });
             },
             elevation: 0,

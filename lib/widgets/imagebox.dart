@@ -12,7 +12,7 @@ class ImageBox extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.3,
-        child: Image.network(imageSrc, fit: BoxFit.cover,),
+        child: Image.network(imageSrc, fit: BoxFit.contain,),
       ),
     );
   }

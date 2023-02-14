@@ -59,7 +59,7 @@ class AIUtilities {
 }
 
 class ScrapingUtilities {
-  static Future<List<String>> getArticleData(article, topicName) async {
+  static Future<List<String>> getArticleData(article) async {
     Response response = await Client().get(
         Uri.parse('https://en.wikipedia.org/wiki/' + article),
         headers: {'Charset': 'utf-8'});
@@ -89,10 +89,45 @@ class ScrapingUtilities {
       }
 
       documentData = documentData;
-      return [documentData, topicName];
+      return [documentData, article];
     }
 
-    return [finalResponse, topicName];
+    return [finalResponse, article];
+  }
+
+  static Future<String> getArticleBrief(article) async {
+    Response response = await Client().get(
+        Uri.parse('https://en.wikipedia.org/wiki/' + article),
+        headers: {'Charset': 'utf-8'});
+    String finalResponse = "";
+    String documentData = "";
+    bool isBefore = true;
+
+    if (response.statusCode == 200) {
+      var document = parser.parse(response.body);
+      List<DOM.Element> pTags = document.getElementsByTagName('p');
+      List<DOM.Element> imgTags = document.getElementsByTagName('img');
+
+      for (DOM.Element element in document.getElementsByTagName('*')) {
+        if (element.className.contains('mw-headline') && isBefore) {
+          isBefore = false;
+        }
+
+        if ((pTags.contains(element) || imgTags.contains(element)) &&
+            isBefore) {
+          if (pTags.contains(element) && pTags.indexOf(element) != 0) {
+            documentData +=
+                '${element.text.trim().replaceAll(RegExp(r"\[.*?\]"), '')}\n';
+          } else if (imgTags.contains(element)) {
+            // render imagebox somehow
+          }
+        } else {}
+      }
+
+      return documentData.trim();
+    }
+
+    return finalResponse;
   }
 
   static Future<String> getImageFromArticle(String article) async {
@@ -104,7 +139,11 @@ class ScrapingUtilities {
       var document = parser.parse(response.body);
       List<DOM.Element> imgTags = document.getElementsByTagName('img');
 
-      return imgTags[0].attributes['src'] as String;
+      for (int i = 0; i < imgTags.length; i++) {
+        if (imgTags[i].parent!.className.contains("image")) {
+          return "https:${imgTags[i].attributes['src'] as String}";
+        }
+      }
     }
 
     return "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
@@ -131,8 +170,7 @@ class ScrapingUtilities {
 
     return ScrapingUtilities.getArticleData(
         await ScrapingUtilities.getTextFileData(
-            LocalStorageUtilities.getPreferenceTextFile(topicName)),
-        topicName);
+            LocalStorageUtilities.getPreferenceTextFile(topicName)));
   }
 }
 

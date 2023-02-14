@@ -46,11 +46,9 @@ class NewsCard extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 );
                               } else {
-                                return Image.network(
-                                  '$img',
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.35,
-                                  fit: BoxFit.cover,
+                                return Container(
+                                  height: MediaQuery.of(context).size.height * 0.35,
+                                  color: Colors.white,
                                 );
                               }
                             }),
@@ -64,7 +62,7 @@ class NewsCard extends StatelessWidget {
                         Center(
                           child: Padding(
                             padding: const EdgeInsets.all(20),
-                            child: SelectableText(snapshot.data![1],
+                            child: SelectableText(snapshot.data![1].replaceAll("_", " "),
                                 style: const TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Colors.black,
