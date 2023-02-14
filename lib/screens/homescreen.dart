@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  PageController controller = PageController();
+  PageController controller = PageController(keepPage: true);
   late AnimationController animationController;
   late Animation likeBtnTween;
   late TextSelectionControls bodySelectionControl;
@@ -51,6 +51,7 @@ class HomeScreenState extends State<HomeScreen>
           );
         }),
         itemCount: 100,
+        controller: controller,
       ),
       floatingActionButton: AnimatedBuilder(
         animation: likeBtnTween,
