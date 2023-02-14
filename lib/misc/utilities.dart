@@ -66,24 +66,30 @@ class ScrapingUtilities {
     });
     String finalResponse = "";
     String documentData = "";
+    bool isBefore = false;
 
     if (response.statusCode == 200) {
       var document = parser.parse(response.body);
       List<DOM.Element> data = document.getElementsByTagName('p');
 
-      for (DOM.Element element in data) {
-        if (documentData.length > -1) {
-          documentData += "${element.text}";
+      for (DOM.Element element in document.getElementsByTagName('*')) {
+
+        print(element.text);
+
+          if (element.className.contains('mw-headline') && !isBefore) {
+            isBefore = true;
+          }
+
+        if (documentData.length > -1 && data.contains(element) && isBefore) {
+          documentData += element.text.replaceAll(RegExp(r"\[.*?\]"),'') + '\n';
         } else {
-          break;
         }
       }
 
-      documentData = documentData.toString().trim();
-      print(documentData);
+      documentData = documentData;
+      // print(documentData);
 
-      //finalResponse = await AIUtilities.requestResponse(
-      //    "$documentData \n Summarize while using paragraphs this content within 400 words");
+      // finalResponse = await AIUtilities.requestResponse("$documentData Prompt:Summarize while using paragraphs this content within 400 words.");
       return documentData;
     }
 

@@ -31,7 +31,7 @@ class NewsCard extends StatelessWidget {
                     String bodyContent = "";
 
                     if ((snapshot.data as String).isNotEmpty) {
-                      bodyContent = (snapshot.data as String).trim();
+                      bodyContent = (snapshot.data as String);
                     } else {
                       
                     }
