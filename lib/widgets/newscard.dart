@@ -35,22 +35,27 @@ class NewsCard extends StatelessWidget {
                     return ListView(
                       physics: const BouncingScrollPhysics(),
                       children: <Widget>[
-                        FutureBuilder<String>(builder: ((context, imageSnapshot) {
-                          if (imageSnapshot.hasData && imageSnapshot.data != null) {
-                            return Image.network(
-                          imageSnapshot.data as String,
-                          height: MediaQuery.of(context).size.height * 0.35,
-                          fit: BoxFit.cover,
-                        );
-                          }
-                          else {
-                            return Image.network(
-                          '$img',
-                          height: MediaQuery.of(context).size.height * 0.35,
-                          fit: BoxFit.cover,
-                        );
-                          }
-                        }), future: ScrapingUtilities.getImageFromArticle(articleName)),
+                        FutureBuilder<String>(
+                            builder: ((context, imageSnapshot) {
+                              if (imageSnapshot.hasData &&
+                                  imageSnapshot.data != null) {
+                                return Image.network(
+                                  imageSnapshot.data as String,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.35,
+                                  fit: BoxFit.cover,
+                                );
+                              } else {
+                                return Image.network(
+                                  '$img',
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.35,
+                                  fit: BoxFit.cover,
+                                );
+                              }
+                            }),
+                            future: ScrapingUtilities.getImageFromArticle(
+                                articleName)),
                         const Padding(
                           padding: EdgeInsets.only(
                             top: 30,
