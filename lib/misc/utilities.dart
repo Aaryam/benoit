@@ -83,7 +83,7 @@ class ScrapingUtilities {
             documentData +=
                 '${element.text.replaceAll(RegExp(r"\[.*?\]"), '')}\n';
           } else if (imgTags.contains(element)) {
-            // render imagebox somehow
+            //
           }
         } else {}
       }
@@ -140,7 +140,7 @@ class ScrapingUtilities {
       List<DOM.Element> imgTags = document.getElementsByTagName('img');
 
       for (int i = 0; i < imgTags.length; i++) {
-        if (imgTags[i].parent!.className.contains("image")) {
+        if (imgTags[i].parent!.className == "image") {
           return "https:${imgTags[i].attributes['src'] as String}";
         }
       }
