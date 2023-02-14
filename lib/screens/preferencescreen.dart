@@ -1,12 +1,7 @@
-import 'package:benoit/misc/tempvarstore.dart';
 import 'package:benoit/misc/utilities.dart';
 import 'package:benoit/screens/homescreen.dart';
-import 'package:benoit/widgets/newscard.dart';
 import 'package:benoit/widgets/preferencebutton.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
-
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesScreen extends StatefulWidget {
@@ -51,101 +46,110 @@ class PreferencesScreenState extends State<PreferencesScreen>
               if (sharedPreferencesSnapshot.hasData) {
                 SharedPreferences sharedPreferences = sharedPreferencesSnapshot.data as SharedPreferences;
                 return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Wrap(
-                spacing: 5,
-                runSpacing: 5,
-                children: <Widget>[
-                  PreferenceButton(
-                    text: 'Fictional Characters',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/celebrities.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Historical Events',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/historical_events.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Celebrities',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/celebrities.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Country Musicians',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/celebrities.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Influencers',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/celebrities.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'R&B Musicians',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/celebrities.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Architectural Feats',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/historical_figures.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Advertising Campaigns',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/historical_figures.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Ballet Icons',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/historical_figures.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Mysteries',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/historical_figures.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Global Foods',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/global_foods.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Comic Book Characters',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/comic_characters.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Popular Filmmakers',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/filmmakers.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Historical Figures',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/historical_figures.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Companies',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/entrepreneurs.txt',
-                  ),
-                  PreferenceButton(
-                    text: 'Abnormal Laws',
-                    sharedPreferences: sharedPreferences,
-                    textFile: 'assets/misc/content/entrepreneurs.txt',
-                  ),
-                ],
-              ),
-            ],
-          );
-              }
-              else if (sharedPreferencesSnapshot.hasError) {
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Wrap(
+                        spacing: 5,
+                        runSpacing: 5,
+                        children: <Widget>[
+                          PreferenceButton(
+                            text: 'Political Figures',
+                            sharedPreferences: sharedPreferences,
+                            textFile:
+                                'assets/misc/content/political_figures.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Historical Events',
+                            sharedPreferences: sharedPreferences,
+                            textFile:
+                                'assets/misc/content/historical_events.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Celebrities',
+                            sharedPreferences: sharedPreferences,
+                            textFile: 'assets/misc/content/celebrities.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Country Musicians',
+                            sharedPreferences: sharedPreferences,
+                            textFile:
+                                'assets/misc/content/country_musicians.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Influencers',
+                            sharedPreferences: sharedPreferences,
+                            textFile: 'assets/misc/content/celebrities.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'R&B Musicians',
+                            sharedPreferences: sharedPreferences,
+                            textFile: 'assets/misc/content/celebrities.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Architectural Feats',
+                            sharedPreferences: sharedPreferences,
+                            textFile:
+                                'assets/misc/content/historical_figures.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Advertising Campaigns',
+                            sharedPreferences: sharedPreferences,
+                            textFile:
+                                'assets/misc/content/historical_figures.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Ballet Icons',
+                            sharedPreferences: sharedPreferences,
+                            textFile:
+                                'assets/misc/content/historical_figures.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Mysteries',
+                            sharedPreferences: sharedPreferences,
+                            textFile:
+                                'assets/misc/content/historical_figures.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Global Foods',
+                            sharedPreferences: sharedPreferences,
+                            textFile: 'assets/misc/content/global_foods.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Comic Book Characters',
+                            sharedPreferences: sharedPreferences,
+                            textFile:
+                                'assets/misc/content/comic_characters.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Popular Filmmakers',
+                            sharedPreferences: sharedPreferences,
+                            textFile: 'assets/misc/content/filmmakers.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Historical Figures',
+                            sharedPreferences: sharedPreferences,
+                            textFile:
+                                'assets/misc/content/historical_figures.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Companies',
+                            sharedPreferences: sharedPreferences,
+                            textFile: 'assets/misc/content/entrepreneurs.txt',
+                          ),
+                          PreferenceButton(
+                            text: 'Abnormal Laws',
+                            sharedPreferences: sharedPreferences,
+                            textFile: 'assets/misc/content/entrepreneurs.txt',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              } else if (sharedPreferencesSnapshot.hasError) {
                 return Text(sharedPreferencesSnapshot.error.toString());
-              }
-              else {
+              } else {
                 return Container();
               }
             },

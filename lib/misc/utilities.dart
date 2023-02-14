@@ -59,44 +59,58 @@ class AIUtilities {
 }
 
 class ScrapingUtilities {
-  static Future<String> getArticleData(article) async {
-    Response response = await Client()
-        .get(Uri.parse('https://en.wikipedia.org/wiki/' + article), headers: {
-      'Charset': 'utf-8'
-    });
+  static Future<List<String>> getArticleData(article, topicName) async {
+    Response response = await Client().get(
+        Uri.parse('https://en.wikipedia.org/wiki/' + article),
+        headers: {'Charset': 'utf-8'});
     String finalResponse = "";
     String documentData = "";
     bool isBefore = false;
 
     if (response.statusCode == 200) {
       var document = parser.parse(response.body);
-      List<DOM.Element> data = document.getElementsByTagName('p');
+      List<DOM.Element> pTags = document.getElementsByTagName('p');
+      List<DOM.Element> imgTags = document.getElementsByTagName('img');
 
       for (DOM.Element element in document.getElementsByTagName('*')) {
-
-        print(element.text);
-
-          if (element.className.contains('mw-headline') && !isBefore) {
-            isBefore = true;
-          }
-
-        if (documentData.length > -1 && data.contains(element) && isBefore) {
-          documentData += element.text.replaceAll(RegExp(r"\[.*?\]"),'') + '\n';
-        } else {
+        if (element.className.contains('mw-headline') && !isBefore) {
+          isBefore = true;
         }
+
+        if ((pTags.contains(element) || imgTags.contains(element)) &&
+            isBefore) {
+          if (pTags.contains(element)) {
+            documentData +=
+                '${element.text.replaceAll(RegExp(r"\[.*?\]"), '')}\n';
+          } else if (imgTags.contains(element)) {
+            // render imagebox somehow
+          }
+        } else {}
       }
 
       documentData = documentData;
-      // print(documentData);
-
-      // finalResponse = await AIUtilities.requestResponse("$documentData Prompt:Summarize while using paragraphs this content within 400 words.");
-      return documentData;
+      return [documentData, topicName];
     }
 
-    return finalResponse;
+    return [finalResponse, topicName];
   }
 
-  static Future<String> selectTopic(textFile) async {
+  static Future<String> getImageFromArticle(String article) async {
+    Response response = await Client().get(
+        Uri.parse('https://en.wikipedia.org/wiki/' + article),
+        headers: {'Charset': 'utf-8'});
+
+    if (response.statusCode == 200) {
+      var document = parser.parse(response.body);
+      List<DOM.Element> imgTags = document.getElementsByTagName('img');
+
+      return imgTags[0].attributes['src'] as String;
+    }
+
+    return "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
+  }
+
+  static Future<String> getTextFileData(textFile) async {
     String text = await rootBundle.loadString('$textFile');
     int randomNumber = Random().nextInt(text.split("\n").length);
 
@@ -108,13 +122,17 @@ class ScrapingUtilities {
         LocalStorageUtilities.getPreferences(sharedPreferences);
     int randomNumber = Random().nextInt(themes.length);
 
-    return LocalStorageUtilities.getPreferenceTextFile(themes[randomNumber]);
+    return themes[randomNumber];
   }
 
-  static Future<String> getInformationBody(
+  static Future<List<String>> getInformationBody(
       SharedPreferences sharedPreferences) async {
-    return ScrapingUtilities.getArticleData(await ScrapingUtilities.selectTopic(
-        ScrapingUtilities.selectTheme(sharedPreferences)));
+    String topicName = ScrapingUtilities.selectTheme(sharedPreferences);
+
+    return ScrapingUtilities.getArticleData(
+        await ScrapingUtilities.getTextFileData(
+            LocalStorageUtilities.getPreferenceTextFile(topicName)),
+        topicName);
   }
 }
 

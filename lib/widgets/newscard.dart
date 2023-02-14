@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:math';
 import 'package:benoit/misc/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,27 +21,36 @@ class NewsCard extends StatelessWidget {
               SharedPreferences sharedPreferences =
                   sharedPreferencesSnapshot.data as SharedPreferences;
 
-              return FutureBuilder<String>(
-                future: ScrapingUtilities
-                    .getInformationBody(sharedPreferences),
+              return FutureBuilder<List<String>>(
+                future: ScrapingUtilities.getInformationBody(sharedPreferences),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     String bodyContent = "";
+                    String articleName = snapshot.data![1];
 
-                    if ((snapshot.data as String).isNotEmpty) {
-                      bodyContent = (snapshot.data as String);
-                    } else {
-                      
-                    }
+                    if ((snapshot.data![0]).isNotEmpty) {
+                      bodyContent = (snapshot.data![0]);
+                    } else {}
 
                     return ListView(
                       physics: const BouncingScrollPhysics(),
                       children: <Widget>[
-                        Image.network(
+                        FutureBuilder<String>(builder: ((context, imageSnapshot) {
+                          if (imageSnapshot.hasData && imageSnapshot.data != null) {
+                            return Image.network(
+                          imageSnapshot.data as String,
+                          height: MediaQuery.of(context).size.height * 0.35,
+                          fit: BoxFit.cover,
+                        );
+                          }
+                          else {
+                            return Image.network(
                           '$img',
                           height: MediaQuery.of(context).size.height * 0.35,
                           fit: BoxFit.cover,
-                        ),
+                        );
+                          }
+                        }), future: ScrapingUtilities.getImageFromArticle(articleName)),
                         const Padding(
                           padding: EdgeInsets.only(
                             top: 30,
@@ -52,7 +59,7 @@ class NewsCard extends StatelessWidget {
                         Center(
                           child: Padding(
                             padding: const EdgeInsets.all(20),
-                            child: SelectableText("Untitled",
+                            child: SelectableText(snapshot.data![1],
                                 style: const TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Colors.black,
