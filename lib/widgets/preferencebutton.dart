@@ -12,35 +12,38 @@ class PreferenceButton extends StatelessWidget {
     required this.sharedPreferences,
     required this.textFile,
   });
+/* 
 
+
+
+*/
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: BenoitColors.jungleGreen,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+      child: Container(
+        height: (MediaQuery.of(context).size.width * 1 / 2) - 8,
+        width: (MediaQuery.of(context).size.width * 1 / 2) - 8,
+        decoration: BoxDecoration(
+          color: BenoitColors.jungleGreen,
           borderRadius: BorderRadius.circular(10),
-          onTap: () async {
-            await LocalStorageUtilities.addPreference(text, textFile, sharedPreferences);
+        ),
+        child: TextButton(
+          onPressed: () async {
+            await LocalStorageUtilities.addPreference(
+                text, textFile, sharedPreferences);
           },
           onLongPress: () async {
             await LocalStorageUtilities.clearPreferences(sharedPreferences);
           },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontFamily: 'Poppins',
-                color: Colors.black,
-                fontSize: 12,
-              ),
+          child: Align(alignment: Alignment.bottomLeft, child: Text(
+            text,
+            style: const TextStyle(
+              fontFamily: 'Poppins',
+              color: Colors.black,
+              fontSize: 12,
             ),
-          ),
+          ),)
         ),
       ),
     );

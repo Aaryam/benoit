@@ -67,6 +67,8 @@ class ScrapingUtilities {
     String documentData = "";
     bool isBefore = false;
 
+    const DOCUMENT_LENGTH = 30;
+
     if (response.statusCode == 200) {
       var document = parser.parse(response.body);
       List<DOM.Element> pTags = document.getElementsByTagName('p');
@@ -95,9 +97,8 @@ class ScrapingUtilities {
           }
         } else {}
       }
-
-      documentData = documentData;
-      return [documentData, article + "#" + sectionHeader.text];
+      
+      return documentData.split(" ").length > DOCUMENT_LENGTH ? [documentData, article + "#" + sectionHeader.text] : await getArticleData(article);
     }
 
     return [finalResponse, article + "#"];
@@ -183,6 +184,7 @@ class ScrapingUtilities {
 }
 
 class LocalStorageUtilities {
+  
   // PREFERENCES:
   // "preferenceName•textfile|preferenceName1•textfile1"
 

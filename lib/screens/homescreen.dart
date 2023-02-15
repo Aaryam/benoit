@@ -44,11 +44,7 @@ class HomeScreenState extends State<HomeScreen>
     return Scaffold(
       body: PageView.builder(
         itemBuilder: ((context, index) {
-          return const NewsCard(
-            title: 'Untitled',
-            img:
-                'https://cdn.vox-cdn.com/thumbor/201jHY6gZb68viG_DhitZzp1OCw=/0x0:2040x1360/2000x1333/filters:focal(1020x680:1021x681)/cdn.vox-cdn.com/uploads/chorus_asset/file/22977156/acastro_211101_1777_meta_0002.jpg',
-          );
+          return const NewsCard();
         }),
         itemCount: 100,
         controller: controller,

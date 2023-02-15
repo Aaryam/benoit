@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NewsCard extends StatelessWidget {
-  final title;
-  final img;
-
-  const NewsCard({Key? key, this.title, this.img}) : super(key: key);
+  const NewsCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +61,7 @@ class NewsCard extends StatelessWidget {
                                   }
                                 }),
                                 future: ScrapingUtilities.getImageFromArticle(
-                                    articleName)),
+                                    articleName.split("#")[0])),
                             const Padding(
                               padding: EdgeInsets.only(
                                 top: 30,
@@ -74,15 +71,29 @@ class NewsCard extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(20),
                                 child: SelectableText(
-                                    snapshot.data![1].replaceAll("_", " "),
+                                    snapshot.data![1].replaceAll("_", " ").split("#")[0],
                                     style: const TextStyle(
                                       fontFamily: 'Poppins',
                                       color: Colors.black,
                                       fontWeight: FontWeight.w900,
                                       fontSize: 26,
                                     ),
-                                    toolbarOptions:
-                                        const ToolbarOptions(copy: true)),
+                                    toolbarOptions: const ToolbarOptions(copy: true)),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+                              child: SelectableText(
+                                snapshot.data![1].replaceAll("_", " ").split("#")[1].contains("[edit]") ? snapshot.data![1].replaceAll("_", " ").split("#")[1].split("[edit]")[0] : snapshot.data![1].replaceAll("_", " ").split("#")[1],
+                                style: const TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                                onSelectionChanged: (selection, cause) {
+                                  // selection
+                                },
                               ),
                             ),
                             Padding(

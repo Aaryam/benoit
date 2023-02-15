@@ -39,108 +39,157 @@ class PreferencesScreenState extends State<PreferencesScreen>
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(0),
           child: FutureBuilder<SharedPreferences>(
             future: SharedPreferences.getInstance(),
             builder: (context, sharedPreferencesSnapshot) {
               if (sharedPreferencesSnapshot.hasData) {
-                SharedPreferences sharedPreferences = sharedPreferencesSnapshot.data as SharedPreferences;
+                SharedPreferences sharedPreferences =
+                    sharedPreferencesSnapshot.data as SharedPreferences;
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                      child: Wrap(
-                        spacing: 5,
-                        runSpacing: 5,
-                        children: <Widget>[
-                          PreferenceButton(
-                            text: 'Political Figures',
-                            sharedPreferences: sharedPreferences,
-                            textFile:
-                                'assets/misc/content/political_figures.txt',
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView(
+                        physics: const BouncingScrollPhysics(),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40,),
+                            child: Text(
+                              'Preferences',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Colors.black,
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                          PreferenceButton(
-                            text: 'Historical Events',
-                            sharedPreferences: sharedPreferences,
-                            textFile:
-                                'assets/misc/content/historical_events.txt',
+                          Row(
+                            children: [
+                              PreferenceButton(
+                                text: 'Political Figures',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/political_figures.txt',
+                              ),
+                              PreferenceButton(
+                                text: 'Historical Events',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/historical_events.txt',
+                              ),
+                            ],
                           ),
-                          PreferenceButton(
-                            text: 'Celebrities',
-                            sharedPreferences: sharedPreferences,
-                            textFile: 'assets/misc/content/celebrities.txt',
+                          Row(
+                            children: <Widget>[
+                              PreferenceButton(
+                                text: 'Celebrities',
+                                sharedPreferences: sharedPreferences,
+                                textFile: 'assets/misc/content/celebrities.txt',
+                              ),
+                              PreferenceButton(
+                                text: 'Country Musicians',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/country_musicians.txt',
+                              ),
+                            ],
                           ),
-                          PreferenceButton(
-                            text: 'Country Musicians',
-                            sharedPreferences: sharedPreferences,
-                            textFile:
-                                'assets/misc/content/country_musicians.txt',
+                          Row(
+                            children: <Widget>[
+                              PreferenceButton(
+                                text: 'Influencers',
+                                sharedPreferences: sharedPreferences,
+                                textFile: 'assets/misc/content/celebrities.txt',
+                              ),
+                              PreferenceButton(
+                                text: 'R&B Musicians',
+                                sharedPreferences: sharedPreferences,
+                                textFile: 'assets/misc/content/celebrities.txt',
+                              ),
+                            ],
                           ),
-                          PreferenceButton(
-                            text: 'Influencers',
-                            sharedPreferences: sharedPreferences,
-                            textFile: 'assets/misc/content/celebrities.txt',
+                          Row(
+                            children: <Widget>[
+                              PreferenceButton(
+                                text: 'Architectural Feats',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/historical_figures.txt',
+                              ),
+                              PreferenceButton(
+                                text: 'Advertising',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/historical_figures.txt',
+                              ),
+                            ],
                           ),
-                          PreferenceButton(
-                            text: 'R&B Musicians',
-                            sharedPreferences: sharedPreferences,
-                            textFile: 'assets/misc/content/celebrities.txt',
+                          Row(
+                            children: <Widget>[
+                              PreferenceButton(
+                                text: 'Ballet Icons',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/historical_figures.txt',
+                              ),
+                              PreferenceButton(
+                                text: 'Comic Characters',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/comic_characters.txt',
+                              ),
+                            ],
                           ),
-                          PreferenceButton(
-                            text: 'Architectural Feats',
-                            sharedPreferences: sharedPreferences,
-                            textFile:
-                                'assets/misc/content/historical_figures.txt',
+                          Row(
+                            children: <Widget>[
+                              PreferenceButton(
+                                text: 'Mysteries',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/historical_figures.txt',
+                              ),
+                              PreferenceButton(
+                                text: 'Global Foods',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/global_foods.txt',
+                              ),
+                            ],
                           ),
-                          PreferenceButton(
-                            text: 'Advertising Campaigns',
-                            sharedPreferences: sharedPreferences,
-                            textFile:
-                                'assets/misc/content/historical_figures.txt',
+                          Row(
+                            children: <Widget>[
+                              PreferenceButton(
+                                text: 'Popular Filmmakers',
+                                sharedPreferences: sharedPreferences,
+                                textFile: 'assets/misc/content/filmmakers.txt',
+                              ),
+                              PreferenceButton(
+                                text: 'Historical Figures',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/historical_figures.txt',
+                              ),
+                            ],
                           ),
-                          PreferenceButton(
-                            text: 'Ballet Icons',
-                            sharedPreferences: sharedPreferences,
-                            textFile:
-                                'assets/misc/content/historical_figures.txt',
-                          ),
-                          PreferenceButton(
-                            text: 'Mysteries',
-                            sharedPreferences: sharedPreferences,
-                            textFile:
-                                'assets/misc/content/historical_figures.txt',
-                          ),
-                          PreferenceButton(
-                            text: 'Global Foods',
-                            sharedPreferences: sharedPreferences,
-                            textFile: 'assets/misc/content/global_foods.txt',
-                          ),
-                          PreferenceButton(
-                            text: 'Comic Book Characters',
-                            sharedPreferences: sharedPreferences,
-                            textFile:
-                                'assets/misc/content/comic_characters.txt',
-                          ),
-                          PreferenceButton(
-                            text: 'Popular Filmmakers',
-                            sharedPreferences: sharedPreferences,
-                            textFile: 'assets/misc/content/filmmakers.txt',
-                          ),
-                          PreferenceButton(
-                            text: 'Historical Figures',
-                            sharedPreferences: sharedPreferences,
-                            textFile:
-                                'assets/misc/content/historical_figures.txt',
-                          ),
-                          PreferenceButton(
-                            text: 'Companies',
-                            sharedPreferences: sharedPreferences,
-                            textFile: 'assets/misc/content/entrepreneurs.txt',
-                          ),
-                          PreferenceButton(
-                            text: 'Abnormal Laws',
-                            sharedPreferences: sharedPreferences,
-                            textFile: 'assets/misc/content/entrepreneurs.txt',
+                          Row(
+                            children: <Widget>[
+                              PreferenceButton(
+                                text: 'Abnormal Laws',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/entrepreneurs.txt',
+                              ),
+                              PreferenceButton(
+                                text: 'Companies',
+                                sharedPreferences: sharedPreferences,
+                                textFile:
+                                    'assets/misc/content/entrepreneurs.txt',
+                              ),
+                            ],
                           ),
                         ],
                       ),
