@@ -71,13 +71,18 @@ class ScrapingUtilities {
       var document = parser.parse(response.body);
       List<DOM.Element> pTags = document.getElementsByTagName('p');
       List<DOM.Element> imgTags = document.getElementsByTagName('img');
+      List<DOM.Element> h2Tags = document.getElementsByTagName('h2');
+      List<DOM.Element> mwHeadlines = document.getElementsByClassName('mw-headline');
+
+      int randomNumber = Random().nextInt(mwHeadlines.length);
+      DOM.Element sectionHeader = mwHeadlines[randomNumber].parent as DOM.Element;
 
       for (DOM.Element element in document.getElementsByTagName('*')) {
-        if (element.className.contains('mw-headline') && !isBefore) {
+        if (sectionHeader == element && !isBefore) {
           isBefore = true;
         }
 
-        if ((pTags.contains(element) || imgTags.contains(element)) &&
+        if ((pTags.contains(element) || imgTags.contains(element) || h2Tags.contains(element)) &&
             isBefore) {
           if (pTags.contains(element)) {
             documentData +=
@@ -85,14 +90,17 @@ class ScrapingUtilities {
           } else if (imgTags.contains(element)) {
             //
           }
+          else if (h2Tags.contains(element)) {
+            break;
+          }
         } else {}
       }
 
       documentData = documentData;
-      return [documentData, article];
+      return [documentData, article + "#" + sectionHeader.text];
     }
 
-    return [finalResponse, article];
+    return [finalResponse, article + "#"];
   }
 
   static Future<String> getArticleBrief(article) async {
