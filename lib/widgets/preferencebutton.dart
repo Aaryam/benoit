@@ -12,11 +12,7 @@ class PreferenceButton extends StatelessWidget {
     required this.sharedPreferences,
     required this.textFile,
   });
-/* 
-
-
-
-*/
+  
   @override
   Widget build(BuildContext context) {
     return Padding(

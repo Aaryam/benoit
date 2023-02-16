@@ -74,7 +74,7 @@ class ScrapingUtilities {
       List<DOM.Element> pTags = document.getElementsByTagName('p');
       List<DOM.Element> imgTags = document.getElementsByTagName('img');
       List<DOM.Element> h2Tags = document.getElementsByTagName('h2');
-      List<DOM.Element> mwHeadlines = document.getElementsByClassName('mw-headline');
+      List<DOM.Element> mwHeadlines = document.querySelectorAll('h2 > .mw-headline');
 
       int randomNumber = Random().nextInt(mwHeadlines.length);
       DOM.Element sectionHeader = mwHeadlines[randomNumber].parent as DOM.Element;
@@ -90,9 +90,9 @@ class ScrapingUtilities {
             documentData +=
                 '${element.text.replaceAll(RegExp(r"\[.*?\]"), '')}\n';
           } else if (imgTags.contains(element)) {
-            //
+            print(element);
           }
-          else if (h2Tags.contains(element)) {
+          else if (h2Tags.contains(element) && element != sectionHeader) {
             break;
           }
         } else {}
@@ -200,6 +200,8 @@ class LocalStorageUtilities {
       SharedPreferences sharedPreferences) {
     String preferences = sharedPreferences.getString('preferences') ?? '';
 
+    print(preferences);
+
     preferences += preferences.isNotEmpty
         ? "|$preferenceName•$textFile"
         : "$preferenceName•$textFile";
@@ -216,6 +218,9 @@ class LocalStorageUtilities {
   }
 
   static Future<bool> clearPreferences(SharedPreferences sharedPreferences) {
+
+    print("Cleared");
+
     return sharedPreferences.setString('preferences', '');
   }
 

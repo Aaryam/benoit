@@ -72,8 +72,7 @@ class PreferencesScreenState extends State<PreferencesScreen>
                               PreferenceButton(
                                 text: 'Political Figures',
                                 sharedPreferences: sharedPreferences,
-                                textFile:
-                                    'assets/misc/content/political_figures.txt',
+                                textFile: 'assets/misc/content/political_figures.txt',
                               ),
                               PreferenceButton(
                                 text: 'Historical Events',
