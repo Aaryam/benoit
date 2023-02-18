@@ -80,6 +80,7 @@ flutter:
    - assets/misc/content/historical_events.txt
    - assets/misc/content/historical_figures.txt
    - assets/misc/content/marketing_campaigns.txt
+   - assets/misc/content/political_figures.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

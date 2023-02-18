@@ -127,8 +127,6 @@ class ScrapingUtilities {
           if (pTags.contains(element) && pTags.indexOf(element) != 0) {
             documentData +=
                 '${element.text.trim().replaceAll(RegExp(r"\[.*?\]"), '')}\n';
-          } else if (imgTags.contains(element)) {
-            // render imagebox somehow
           }
         } else {}
       }
@@ -236,4 +234,14 @@ class LocalStorageUtilities {
 
     return sharedPreferences.setString('preferences', preferenceList.join());
   }
+}
+
+class WidgetUtilities {
+
+  static List<Widget> getWidgetsFromText(text) {
+    List<Widget> widgets = [];
+
+    return widgets;
+  }
+
 }

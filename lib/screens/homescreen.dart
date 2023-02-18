@@ -46,8 +46,6 @@ class HomeScreenState extends State<HomeScreen>
         itemBuilder: ((context, index) {
           return const NewsCard();
         }),
-        itemCount: 100,
-        controller: controller,
       ),
       floatingActionButton: AnimatedBuilder(
         animation: likeBtnTween,

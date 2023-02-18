@@ -6,11 +6,12 @@ class PreferenceButton extends StatelessWidget {
   final String text;
   final String textFile;
   final SharedPreferences sharedPreferences;
+  final String imgSrc;
 
   const PreferenceButton({
     required this.text,
     required this.sharedPreferences,
-    required this.textFile,
+    required this.textFile, required this.imgSrc,
   });
   
   @override
@@ -21,8 +22,13 @@ class PreferenceButton extends StatelessWidget {
         height: (MediaQuery.of(context).size.width * 1 / 2) - 8,
         width: (MediaQuery.of(context).size.width * 1 / 2) - 8,
         decoration: BoxDecoration(
-          color: BenoitColors.jungleGreen,
+          color: Colors.black,
           borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+            image: NetworkImage(imgSrc),
+            fit: BoxFit.cover,
+            opacity: 0.4,
+          )
         ),
         child: TextButton(
           onPressed: () async {
@@ -36,7 +42,7 @@ class PreferenceButton extends StatelessWidget {
             text,
             style: const TextStyle(
               fontFamily: 'Poppins',
-              color: Colors.black,
+              color: Colors.white,
               fontSize: 12,
             ),
           ),)

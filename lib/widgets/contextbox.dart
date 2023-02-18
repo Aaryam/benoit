@@ -11,7 +11,7 @@ class ContextBox extends StatelessWidget {
     return AlertDialog(
       title: Text(
         contextText.replaceAll("_", " "),
-        style: const TextStyle(fontFamily: 'Poppins'),
+        style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
       ),
       content: SizedBox(
         height: MediaQuery.of(context).size.height * 0.25,
@@ -47,6 +47,8 @@ class ContextBox extends StatelessWidget {
           ),
         ),
       ),
+      contentPadding: const EdgeInsets.only(top: 20.0, bottom: 15.0, left: 20.0, right: 20.0),
+      actionsPadding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
       actions: <Widget>[
         TextButton(
           child: Text(
