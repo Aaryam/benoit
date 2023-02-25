@@ -1,9 +1,6 @@
-import 'package:benoit/misc/utilities.dart';
-import 'package:benoit/widgets/contextbox.dart';
-import 'package:benoit/widgets/newscard.dart';
+import 'package:benoit/widgets/contentcard.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -14,71 +11,88 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  PageController controller = PageController(keepPage: true);
-  late AnimationController animationController;
-  late Animation likeBtnTween;
-  late TextSelectionControls bodySelectionControl;
+class HomeScreenState extends State<HomeScreen> {
+  ScrollController scrollController = ScrollController();
+
+  int itemCount = 10;
+  int currentNavIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 300), vsync: this);
-    likeBtnTween = ColorTween(
-            begin: BenoitColors.jungleGreen, end: BenoitColors.jungleGreen[900])
-        .animate(animationController);
-
-    bodySelectionControl = MaterialTextSelectionControls();
   }
 
   @override
   void dispose() {
-    animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView.builder(
-        itemBuilder: ((context, index) {
-          return const NewsCard();
-        }),
-      ),
-      floatingActionButton: AnimatedBuilder(
-        animation: likeBtnTween,
-        builder: ((context, child) {
-          return FloatingActionButton(
-            focusElevation: 0,
-            hoverElevation: 0,
-            disabledElevation: 0,
-            highlightElevation: 0,
-            backgroundColor: likeBtnTween.value,
-            onPressed: () async {
-              if (animationController.status == AnimationStatus.completed) {
-                animationController.reverse();
-              } else {
-                animationController.forward();
-              }
+        bottomNavigationBar: BottomNavigationBar(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          currentIndex: currentNavIndex,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
+          ],
+          onTap: (int index) {
+            if (index == 0 && currentNavIndex == 0) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(
+                      title: 'Benoit',
+                    ),
+                  ),
+                  (Route<dynamic> route) => false);
+            } else if (index == 1) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(
+                      title: 'Benoit',
+                    ),
+                  ),
+                  (Route<dynamic> route) => false);
+            } else {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(
+                      title: 'Benoit',
+                    ),
+                  ),
+                  (Route<dynamic> route) => false);
+            }
+          },
+        ),
+        body: FutureBuilder(
+          future: SharedPreferences.getInstance(),
+          builder: (context, sharedPreferencesSnapshot) {
+            if (sharedPreferencesSnapshot.hasData) {
+              SharedPreferences sharedPreferences =
+                  sharedPreferencesSnapshot.data as SharedPreferences;
 
-              ClipboardData copyText = await Clipboard.getData('text/plain') as ClipboardData;
-
-              showDialog(context: context, builder: (context) {
-                return ContextBox(contextText: copyText.text as String);
-              });
-            },
-            elevation: 0,
-            foregroundColor: Colors.white,
-            child: Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.rotationY(0),
-              child: const Icon(Icons.search),
-            ),
-          );
-        }),
-      ),
-    );
+              return ListView.builder(
+                addAutomaticKeepAlives: true,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return ContentCard(
+                    sharedPreferences: sharedPreferences,
+                  );
+                },
+                itemCount: 10,
+              );
+            } else if (sharedPreferencesSnapshot.hasError) {
+              return Text(sharedPreferencesSnapshot.error.toString());
+            } else {
+              return Container();
+            }
+          },
+        ));
   }
 }

@@ -51,7 +51,6 @@ class AIUtilities {
       encoding: encoding,
     );
 
-    int statusCode = response.statusCode;
     String responseBody = response.body;
 
     return responseBody;
@@ -90,7 +89,7 @@ class ScrapingUtilities {
             documentData +=
                 '${element.text.replaceAll(RegExp(r"\[.*?\]"), '')}\n';
           } else if (imgTags.contains(element)) {
-            print(element);
+            // print(element);
           }
           else if (h2Tags.contains(element) && element != sectionHeader) {
             break;
@@ -198,7 +197,7 @@ class LocalStorageUtilities {
       SharedPreferences sharedPreferences) {
     String preferences = sharedPreferences.getString('preferences') ?? '';
 
-    print(preferences);
+    // print(preferences);
 
     preferences += preferences.isNotEmpty
         ? "|$preferenceName•$textFile"
