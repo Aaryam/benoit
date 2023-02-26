@@ -30,69 +30,77 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          currentIndex: currentNavIndex,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
-          ],
-          onTap: (int index) {
-            if (index == 0 && currentNavIndex == 0) {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(
-                      title: 'Benoit',
-                    ),
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        currentIndex: currentNavIndex,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
+        ],
+        onTap: (int index) {
+          if (index == 0 && currentNavIndex == 0) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(
+                    title: 'Benoit',
                   ),
-                  (Route<dynamic> route) => false);
-            } else if (index == 1) {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(
-                      title: 'Benoit',
-                    ),
+                ),
+                (Route<dynamic> route) => false);
+          } else if (index == 1) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(
+                    title: 'Benoit',
                   ),
-                  (Route<dynamic> route) => false);
-            } else {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(
-                      title: 'Benoit',
-                    ),
+                ),
+                (Route<dynamic> route) => false);
+          } else {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(
+                    title: 'Benoit',
                   ),
-                  (Route<dynamic> route) => false);
-            }
+                ),
+                (Route<dynamic> route) => false);
+          }
+        },
+      ),
+      body: RefreshIndicator(
+          onRefresh: () async {
+            setState(() {});
           },
-        ),
-        body: FutureBuilder(
-          future: SharedPreferences.getInstance(),
-          builder: (context, sharedPreferencesSnapshot) {
-            if (sharedPreferencesSnapshot.hasData) {
-              SharedPreferences sharedPreferences =
-                  sharedPreferencesSnapshot.data as SharedPreferences;
+          child: FutureBuilder(
+            future: SharedPreferences.getInstance(),
+            builder: (context, sharedPreferencesSnapshot) {
+              if (sharedPreferencesSnapshot.hasData) {
+                SharedPreferences sharedPreferences =
+                    sharedPreferencesSnapshot.data as SharedPreferences;
 
-              return ListView.builder(
-                addAutomaticKeepAlives: true,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return ContentCard(
-                    sharedPreferences: sharedPreferences,
-                  );
-                },
-                itemCount: 10,
-              );
-            } else if (sharedPreferencesSnapshot.hasError) {
-              return Text(sharedPreferencesSnapshot.error.toString());
-            } else {
-              return Container();
-            }
-          },
-        ));
+                return ListView.builder(
+                  addAutomaticKeepAlives: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4.0),
+                      child: ContentCard(
+                        sharedPreferences: sharedPreferences,
+                      ),
+                    );
+                  },
+                  itemCount: 10,
+                );
+              } else if (sharedPreferencesSnapshot.hasError) {
+                return Text(sharedPreferencesSnapshot.error.toString());
+              } else {
+                return Container();
+              }
+            },
+          )),
+    );
   }
 }

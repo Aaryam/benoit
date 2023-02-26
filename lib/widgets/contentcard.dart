@@ -29,59 +29,26 @@ class ContentCard extends StatelessWidget {
                     (Route<dynamic> route) => false);
               },
               child: Container(
-                width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.25,
-                color: Colors.white,
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: FutureBuilder(
-                        future: ScrapingUtilities.getImageFromArticle(articleTitle),
-                        builder: (context, imageSnapshot) {
-                          if (imageSnapshot.hasData) {
-                            String networkUrl = imageSnapshot.data as String;
-
-                            return Image.network(
-                              networkUrl,
-                              fit: BoxFit.cover,
-                            );
-                          } else if (imageSnapshot.hasError) {
-                            print(imageSnapshot.error.toString());
-                            return Image.network(
-                              'https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg',
-                              fit: BoxFit.cover,
-                            );
-                          } else {
-                            return Image.network(
-                              'https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg',
-                              fit: BoxFit.cover,
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            Center(
-                              child: Text(
-                                articleTitle,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                width: MediaQuery.of(context).size.width * 0.8,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(articleTitle.replaceAll("_", " "),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            color: Colors.black87,
+                          )),
+                    ],
+                  ),
                 ),
               ),
             );

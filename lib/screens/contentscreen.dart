@@ -108,10 +108,64 @@ class ContentScreenState extends State<ContentScreen>
           ClipboardData copyText =
               await Clipboard.getData('text/plain') as ClipboardData;
 
-          showDialog(
+          showModalBottomSheet(
               context: context,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
               builder: (context) {
-                return ContextBox(contextText: copyText.text as String);
+                return Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: FutureBuilder<String>(
+                        future: ScrapingUtilities.getArticleBrief(
+                            copyText.text as String),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            String finalContextText = snapshot.data as String;
+
+                            return ListBody(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 20.0),
+                                  child: Center(
+                                    child: Text(
+                                      (copyText.text as String)
+                                          .replaceAll('_', ' '),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Poppins',
+                                        fontSize: 24,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  finalContextText,
+                                  style: const TextStyle(
+                                      fontFamily: 'Poppins', fontSize: 14),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Center(
+                              child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.25,
+                                width:
+                                    MediaQuery.of(context).size.height * 0.25,
+                                child: Image.asset(
+                                  "assets/gifs/loadingdots.gif",
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ));
               });
         },
         elevation: 0,
