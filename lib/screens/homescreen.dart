@@ -86,13 +86,14 @@ class HomeScreenState extends State<HomeScreen> {
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 4.0),
                       child: ContentCard(
                         sharedPreferences: sharedPreferences,
                       ),
                     );
                   },
-                  itemCount: 10,
+                  itemCount: 25,
                 );
               } else if (sharedPreferencesSnapshot.hasError) {
                 return Text(sharedPreferencesSnapshot.error.toString());

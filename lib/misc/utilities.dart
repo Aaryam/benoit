@@ -185,6 +185,23 @@ class LocalStorageUtilities {
   // PREFERENCES:
   // "preferenceName•textfile|preferenceName1•textfile1"
 
+  static Map<String, String> preferencesMap = {
+    'Political Figures': 'assets/misc/content/political_figures.txt',
+    'Historical Events': 'assets/misc/content/historical_events.txt',
+    'Celebrities': 'assets/misc/content/celebrities.txt',
+    'Country Musicians': 'assets/misc/content/country_musicians.txt',
+    'Advertising': 'assets/misc/content/marketing_campaigns.txt',
+    'Comic Characters': 'assets/misc/content/comic_characters.txt',
+    'True Crime': 'assets/misc/content/crimes.txt',
+    'Global Foods': 'assets/misc/content/global_foods.txt',
+    'Popular Filmmakers': 'assets/misc/content/filmmakers.txt',
+    'Historical Figures': 'assets/misc/content/historical_figures.txt',
+    'Abnormal Laws': 'assets/misc/content/historical_figures.txt',
+    'Companies': 'assets/misc/content/entrepreneurs.txt',
+    'Software Applications': 'assets/misc/content/applications.txt',
+    'Programming': 'assets/misc/content/programming.txt',
+  };
+
   static List<String> getPreferences(SharedPreferences sharedPreferences) {
     String preferences = sharedPreferences.getString('preferences') ?? '';
 

@@ -6,12 +6,11 @@ class PreferenceButton extends StatelessWidget {
   final String text;
   final String textFile;
   final SharedPreferences sharedPreferences;
-  final String imgSrc;
 
   const PreferenceButton({
     required this.text,
     required this.sharedPreferences,
-    required this.textFile, required this.imgSrc,
+    required this.textFile,
   });
   
   @override
@@ -19,16 +18,10 @@ class PreferenceButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
       child: Container(
-        height: (MediaQuery.of(context).size.width * 1 / 2) - 8,
-        width: (MediaQuery.of(context).size.width * 1 / 2) - 8,
+        height: 45,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: BenoitColors.jungleGreen,
           borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
-            image: NetworkImage(imgSrc),
-            fit: BoxFit.cover,
-            opacity: 0.4,
-          )
         ),
         child: TextButton(
           onPressed: () async {
@@ -38,14 +31,14 @@ class PreferenceButton extends StatelessWidget {
           onLongPress: () async {
             await LocalStorageUtilities.clearPreferences(sharedPreferences);
           },
-          child: Align(alignment: Alignment.bottomLeft, child: Text(
+          child: Text(
             text,
             style: const TextStyle(
               fontFamily: 'Poppins',
-              color: Colors.white,
+              color: Color.fromARGB(255, 0, 0, 0),
               fontSize: 12,
             ),
-          ),)
+          ),
         ),
       ),
     );

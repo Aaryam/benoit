@@ -19,14 +19,14 @@ class ContentCard extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                Navigator.pushAndRemoveUntil(
+                Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ContentScreen(
                         articleTitle: articleTitle,
                       ),
-                    ),
-                    (Route<dynamic> route) => false);
+                    )
+                );
               },
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.25,

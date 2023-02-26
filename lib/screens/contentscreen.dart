@@ -38,19 +38,12 @@ class ContentScreenState extends State<ContentScreen>
         showUnselectedLabels: false,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.thumb_up), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.thumb_down), label: ''),
         ],
         onTap: (int index) {
           if (index == 0) {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeScreen(
-                    title: 'Benoit',
-                  ),
-                ),
-                (Route<dynamic> route) => false);
+            Navigator.pop(context);
           } else if (index == 1) {
             Navigator.pushAndRemoveUntil(
                 context,
@@ -104,6 +97,7 @@ class ContentScreenState extends State<ContentScreen>
         disabledElevation: 0,
         highlightElevation: 0,
         backgroundColor: BenoitColors.jungleGreen,
+        tooltip: 'Context Search: Copy text and click the button!',
         onPressed: () async {
           ClipboardData copyText =
               await Clipboard.getData('text/plain') as ClipboardData;
@@ -115,12 +109,13 @@ class ContentScreenState extends State<ContentScreen>
               ),
               builder: (context) {
                 return Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.only(
+                        top: 40.0, left: 40.0, right: 40.0, bottom: 0),
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       child: FutureBuilder<String>(
                         future: ScrapingUtilities.getArticleBrief(
-                            copyText.text as String),
+                            copyText.text!.replaceAll(" ", "_")),
                         builder: (context, snapshot) {
                           if (snapshot.hasData && snapshot.data != null) {
                             String finalContextText = snapshot.data as String;
@@ -147,6 +142,9 @@ class ContentScreenState extends State<ContentScreen>
                                   finalContextText,
                                   style: const TextStyle(
                                       fontFamily: 'Poppins', fontSize: 14),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20.0),
                                 ),
                               ],
                             );
