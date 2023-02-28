@@ -127,8 +127,8 @@ class ContentScreenState extends State<ContentScreen>
                                       vertical: 20.0),
                                   child: Center(
                                     child: Text(
-                                      (copyText.text as String)
-                                          .replaceAll('_', ' '),
+                                      finalContextText != '' ? (copyText.text as String)
+                                          .replaceAll('_', ' ') : 'Non-existant Article',
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -139,7 +139,7 @@ class ContentScreenState extends State<ContentScreen>
                                   ),
                                 ),
                                 Text(
-                                  finalContextText,
+                                  finalContextText != '' ? finalContextText : 'Copy text exactly as how it should be searched, and click the button to use Context Search.',
                                   style: const TextStyle(
                                       fontFamily: 'Poppins', fontSize: 14),
                                 ),

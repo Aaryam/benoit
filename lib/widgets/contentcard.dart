@@ -1,6 +1,7 @@
 import 'package:benoit/misc/newutilities.dart';
 import 'package:benoit/misc/utilities.dart';
 import 'package:benoit/screens/contentscreen.dart';
+import 'package:benoit/widgets/imagebox.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,8 +26,7 @@ class ContentCard extends StatelessWidget {
                       builder: (context) => ContentScreen(
                         articleTitle: articleTitle,
                       ),
-                    )
-                );
+                    ));
               },
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.25,
@@ -41,12 +41,16 @@ class ContentCard extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(articleTitle.replaceAll("_", " "),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Colors.black87,
-                          )),
+                      ImageBox(articleName: articleTitle),
+                      Flexible(
+                        child: Text(articleTitle.replaceAll("_", " "),
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              color: Colors.black87,
+                            )),
+                      ),
                     ],
                   ),
                 ),

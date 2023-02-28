@@ -7,7 +7,7 @@ class PreferenceButton extends StatelessWidget {
   final String textFile;
   final SharedPreferences sharedPreferences;
 
-  const PreferenceButton({
+  const PreferenceButton({super.key, 
     required this.text,
     required this.sharedPreferences,
     required this.textFile,

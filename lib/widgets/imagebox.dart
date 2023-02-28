@@ -11,7 +11,10 @@ class ImageBox extends StatelessWidget {
     return FutureBuilder<String>(
         builder: ((context, imageSnapshot) {
           if (imageSnapshot.hasData && imageSnapshot.data != null) {
-            return Padding(
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.35,
+              width: MediaQuery.of(context).size.height * 0.2,
+              child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
@@ -21,6 +24,7 @@ class ImageBox extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               ),
+            ),
             );
           } else {
             return Container(
