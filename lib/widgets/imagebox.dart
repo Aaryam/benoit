@@ -12,8 +12,7 @@ class ImageBox extends StatelessWidget {
         builder: ((context, imageSnapshot) {
           if (imageSnapshot.hasData && imageSnapshot.data != null) {
             return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.35,
-              width: MediaQuery.of(context).size.height * 0.2,
+              width: MediaQuery.of(context).size.width * 0.8,
               child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: ClipRRect(

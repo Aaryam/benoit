@@ -1,4 +1,3 @@
-import 'package:benoit/misc/newutilities.dart';
 import 'package:benoit/misc/utilities.dart';
 import 'package:benoit/screens/contentscreen.dart';
 import 'package:benoit/widgets/imagebox.dart';
@@ -6,43 +5,74 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ContentCard extends StatelessWidget {
-  const ContentCard({super.key, required this.sharedPreferences});
+  const ContentCard(
+      {super.key, required this.sharedPreferences, required this.articleTitle});
 
   final SharedPreferences sharedPreferences;
+  final String articleTitle;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: NewScrapingUtilities.getArticleTitle(sharedPreferences),
-        builder: (context, titleSnapshot) {
-          if (titleSnapshot.hasData) {
-            String articleTitle = titleSnapshot.data as String;
+    String renderedImage = "";
 
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ContentScreen(
-                        articleTitle: articleTitle,
-                      ),
-                    ));
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.25,
-                width: MediaQuery.of(context).size.width * 0.8,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ContentScreen(
+                  articleTitle: articleTitle,
+                  imageSrc: renderedImage,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      ImageBox(articleName: articleTitle),
-                      Flexible(
+              ));
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                FutureBuilder<String>(
+                    builder: ((context, imageSnapshot) {
+                      if (imageSnapshot.hasData && imageSnapshot.data != null) {
+                        renderedImage = imageSnapshot.data as String;
+                        return SizedBox(
+                          width: (MediaQuery.of(context).size.width * 0.47) - 42,
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
+                            child: Image.network(
+                              renderedImage,
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          color: Colors.white,
+                        );
+                      }
+                    }),
+                    future: ScrapingUtilities.getImageFromArticle(
+                        articleTitle.split("#")[0])),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 5.0,),
+                      child: Align(
+                        alignment: Alignment.center,
                         child: Text(articleTitle.replaceAll("_", " "),
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -50,27 +80,13 @@ class ContentCard extends StatelessWidget {
                               fontFamily: 'Poppins',
                               color: Colors.black87,
                             )),
-                      ),
-                    ],
-                  ),
+                      )),
                 ),
-              ),
-            );
-          } else if (titleSnapshot.hasError) {
-            print(titleSnapshot.error.toString());
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.25,
-              width: MediaQuery.of(context).size.width,
-              color: const Color.fromARGB(255, 234, 234, 234),
-              child: Text(titleSnapshot.error.toString()),
-            );
-          } else {
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.25,
-              width: MediaQuery.of(context).size.width,
-              color: const Color.fromARGB(255, 234, 234, 234),
-            );
-          }
-        });
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -84,6 +84,7 @@ flutter:
    - assets/misc/content/applications.txt
    - assets/misc/content/programming.txt
    - assets/misc/content/crimes.txt
+   - assets/misc/content/interesting_topics.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

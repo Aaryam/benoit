@@ -1,3 +1,6 @@
+import 'package:benoit/misc/utilities.dart';
+import 'package:benoit/screens/preferencescreen.dart';
+import 'package:benoit/screens/temptest.dart';
 import 'package:benoit/widgets/contentcard.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,6 +32,20 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Future<List<String>> generateArticleTitles(
+        int count, SharedPreferences sharedPreferences) async {
+      List<String> titles = [];
+
+      for (int i = 0; i < count; i++) {
+        String title =
+            await ScrapingUtilities.getArticleTitle(sharedPreferences);
+
+        titles.add(title);
+      }
+
+      return titles;
+    }
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
@@ -53,16 +70,14 @@ class HomeScreenState extends State<HomeScreen> {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(
-                    title: 'Benoit',
-                  ),
+                  builder: (context) => TempTestScreen(),
                 ),
                 (Route<dynamic> route) => false);
           } else {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(
+                  builder: (context) => const PreferencesScreen(
                     title: 'Benoit',
                   ),
                 ),
@@ -81,20 +96,33 @@ class HomeScreenState extends State<HomeScreen> {
                 SharedPreferences sharedPreferences =
                     sharedPreferencesSnapshot.data as SharedPreferences;
 
-                return ListView.builder(
-                  addAutomaticKeepAlives: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 4.0),
-                      child: ContentCard(
-                        sharedPreferences: sharedPreferences,
-                      ),
+                return FutureBuilder<List<String>>(
+                  future: generateArticleTitles(25, sharedPreferences),
+                  builder: (context, listSnapshot) {
+                  if (listSnapshot.hasData) {
+
+                    List<String> articleList = listSnapshot.data as List<String>;
+
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12.0, horizontal: 4.0),
+                          child: ContentCard(
+                            sharedPreferences: sharedPreferences,
+                            articleTitle: articleList[index],
+                          ),
+                        );
+                      },
+                      itemCount: 25,
                     );
-                  },
-                  itemCount: 25,
-                );
+                  } else if (listSnapshot.hasError) {
+                    return Text(listSnapshot.error.toString());
+                  } else {
+                    return Container();
+                  }
+                });
               } else if (sharedPreferencesSnapshot.hasError) {
                 return Text(sharedPreferencesSnapshot.error.toString());
               } else {

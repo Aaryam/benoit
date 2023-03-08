@@ -58,7 +58,29 @@ class AIUtilities {
 }
 
 class ScrapingUtilities {
-  static Future<List<String>> getArticleData(article) async {
+
+  static Future<String> getArticleTitle(
+      SharedPreferences sharedPreferences) async {
+    List<String> preferences =
+        LocalStorageUtilities.getPreferences(sharedPreferences);
+
+    int preferenceChoiceIndex = Random().nextInt(preferences.length);
+    String selectedPreference = preferences[preferenceChoiceIndex];
+
+    String preferenceName =
+        LocalStorageUtilities.getPreferenceName(selectedPreference);
+    String textFile =
+        LocalStorageUtilities.getPreferenceTextFile(selectedPreference);
+
+    String loadedTextFile = await rootBundle.loadString(textFile);
+    int selectedArticleIndex =
+        Random().nextInt(loadedTextFile.split("\n").length);
+    String articleTitle = loadedTextFile.split("\n")[selectedArticleIndex];
+
+    return articleTitle;
+  }
+
+  static Future<List<String>> getArticleBody(article) async {
     Response response = await Client().get(
         Uri.parse('https://en.wikipedia.org/wiki/' + article),
         headers: {'Charset': 'utf-8'});
@@ -86,8 +108,7 @@ class ScrapingUtilities {
         if ((pTags.contains(element) || imgTags.contains(element) || h2Tags.contains(element)) &&
             isBefore) {
           if (pTags.contains(element)) {
-            documentData +=
-                '${element.text.replaceAll(RegExp(r"\[.*?\]"), '')}\n';
+            documentData += '${element.text.replaceAll(RegExp(r"\[.*?\]"), '')}\n';
           } else if (imgTags.contains(element)) {
             // print(element);
           }
@@ -97,10 +118,22 @@ class ScrapingUtilities {
         } else {}
       }
       
-      return documentData.split(" ").length > DOCUMENT_LENGTH ? [documentData, article + "#" + sectionHeader.text] : await getArticleData(article);
+      return documentData.split(" ").length > DOCUMENT_LENGTH ? [documentData, sectionHeader.text] : await getArticleBody(article);
     }
 
     return [finalResponse, article + "#"];
+  }
+
+  static Future<List<List<String>>> getMultipleStrings(int max, SharedPreferences sharedPreferences) async {
+    List<List<String>> multipleStrings = [];
+
+    for (int i = 0; i < max; i++) {
+      String articleName = await getArticleTitle(sharedPreferences);
+      List<String> articleBody = await getArticleBody(articleName);
+      multipleStrings.add([articleName, articleBody[0], articleBody[1]]);
+    }
+
+    return multipleStrings;
   }
 
   static Future<String> getArticleBrief(article) async {
@@ -154,30 +187,6 @@ class ScrapingUtilities {
 
     return "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
   }
-
-  static Future<String> getTextFileData(textFile) async {
-    String text = await rootBundle.loadString('$textFile');
-    int randomNumber = Random().nextInt(text.split("\n").length);
-
-    return text.split("\n")[randomNumber];
-  }
-
-  static String selectTheme(SharedPreferences sharedPreferences) {
-    List<String> themes =
-        LocalStorageUtilities.getPreferences(sharedPreferences);
-    int randomNumber = Random().nextInt(themes.length);
-
-    return themes[randomNumber];
-  }
-
-  static Future<List<String>> getInformationBody(
-      SharedPreferences sharedPreferences) async {
-    String topicName = ScrapingUtilities.selectTheme(sharedPreferences);
-
-    return ScrapingUtilities.getArticleData(
-        await ScrapingUtilities.getTextFileData(
-            LocalStorageUtilities.getPreferenceTextFile(topicName)));
-  }
 }
 
 class LocalStorageUtilities {
@@ -200,6 +209,7 @@ class LocalStorageUtilities {
     'Companies': 'assets/misc/content/entrepreneurs.txt',
     'Software Applications': 'assets/misc/content/applications.txt',
     'Programming': 'assets/misc/content/programming.txt',
+    'Interesting Topics': 'assets/misc/content/interesting_topics.txt',
   };
 
   static List<String> getPreferences(SharedPreferences sharedPreferences) {
@@ -258,6 +268,14 @@ class WidgetUtilities {
     List<Widget> widgets = [];
 
     return widgets;
+  }
+
+}
+
+class MathUtilities {
+
+  static int getRandomRange(int min, int max) {
+    return Random().nextInt(max) + min;
   }
 
 }

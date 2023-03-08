@@ -1,16 +1,16 @@
-import 'package:benoit/misc/newutilities.dart';
 import 'package:benoit/misc/utilities.dart';
 import 'package:benoit/screens/homescreen.dart';
-import 'package:benoit/widgets/contextbox.dart';
+import 'package:benoit/screens/preferencescreen.dart';
 import 'package:benoit/widgets/newscard.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 
 class ContentScreen extends StatefulWidget {
-  const ContentScreen({super.key, required this.articleTitle});
+  const ContentScreen({super.key, required this.articleTitle, required this.imageSrc});
 
   final String articleTitle;
+  final String imageSrc;
 
   @override
   State<ContentScreen> createState() => ContentScreenState();
@@ -57,7 +57,7 @@ class ContentScreenState extends State<ContentScreen>
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(
+                  builder: (context) => const PreferencesScreen(
                     title: 'Benoit',
                   ),
                 ),
@@ -66,7 +66,7 @@ class ContentScreenState extends State<ContentScreen>
         },
       ),
       body: FutureBuilder<List<String>>(
-        future: NewScrapingUtilities.getArticleBody(widget.articleTitle),
+        future: ScrapingUtilities.getArticleBody(widget.articleTitle),
         builder: (context, contentSnapshot) {
           if (contentSnapshot.hasData) {
             List<String> content = contentSnapshot.data as List<String>;
@@ -75,6 +75,7 @@ class ContentScreenState extends State<ContentScreen>
               articleTitle: widget.articleTitle,
               bodyContent: content[0],
               sectionHeadline: content[1],
+              imageSrc: widget.imageSrc,
             );
           } else if (contentSnapshot.hasError) {
             return Text(contentSnapshot.error.toString());
@@ -127,8 +128,10 @@ class ContentScreenState extends State<ContentScreen>
                                       vertical: 20.0),
                                   child: Center(
                                     child: Text(
-                                      finalContextText != '' ? (copyText.text as String)
-                                          .replaceAll('_', ' ') : 'Non-existant Article',
+                                      finalContextText != ''
+                                          ? (copyText.text as String)
+                                              .replaceAll('_', ' ')
+                                          : 'Non-existant Article',
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -139,7 +142,9 @@ class ContentScreenState extends State<ContentScreen>
                                   ),
                                 ),
                                 Text(
-                                  finalContextText != '' ? finalContextText : 'Copy text exactly as how it should be searched, and click the button to use Context Search.',
+                                  finalContextText != ''
+                                      ? finalContextText
+                                      : 'Copy text exactly as how it should be searched, and click the button to use Context Search.',
                                   style: const TextStyle(
                                       fontFamily: 'Poppins', fontSize: 14),
                                 ),
