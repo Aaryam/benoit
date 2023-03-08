@@ -10,7 +10,8 @@ class NewsCard extends StatelessWidget {
       {Key? key,
       required this.articleTitle,
       required this.bodyContent,
-      required this.sectionHeadline, required this.imageSrc})
+      required this.sectionHeadline,
+      required this.imageSrc})
       : super(key: key);
 
   final String articleTitle;
@@ -25,30 +26,31 @@ class NewsCard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-              child: ScrollProgressBar(scrollController: scrollController),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.99 - 56, // 56px is the height of bottom nav bar
-              child: ListView(
+        children: <Widget>[
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.01,
+            child: ScrollProgressBar(scrollController: scrollController),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.99 -
+                56, // 56px is the height of bottom nav bar
+            child: ListView(
               controller: scrollController,
               physics: const BouncingScrollPhysics(),
               children: <Widget>[
                 SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                imageSrc,
-                fit: BoxFit.cover,
-              ),
-              ),
-            ),
-            ),
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        imageSrc,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
                 const Padding(
                   padding: EdgeInsets.only(
                     top: 30,
@@ -105,9 +107,9 @@ class NewsCard extends StatelessWidget {
                 ),
               ],
             ),
-            ),
-          ],
-        ),
+          ),
+        ],
+      ),
     );
   }
 }

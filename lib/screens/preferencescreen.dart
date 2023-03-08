@@ -29,6 +29,48 @@ class PreferencesScreenState extends State<PreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: Colors.grey[600],
+              ),
+              label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+                color: BenoitColors.jungleGreen,
+              ),
+              label: ''),
+        ],
+        onTap: (int index) {
+          if (index == 0) {
+            Navigator.pop(context);
+          } else if (index == 1) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(
+                    title: 'Benoit',
+                  ),
+                ),
+                (Route<dynamic> route) => false);
+          } else {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PreferencesScreen(
+                    title: 'Benoit',
+                  ),
+                ),
+                (Route<dynamic> route) => false);
+          }
+        },
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(0),
@@ -65,20 +107,32 @@ class PreferencesScreenState extends State<PreferencesScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(
-                title: 'Benoit',
+      floatingActionButton: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: BenoitColors.jungleGreen,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(
+                  title: 'Benoit',
+                ),
               ),
+            );
+          },
+          child: const Text(
+            'Proceed to content!',
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              color: Colors.white,
+              fontSize: 12,
             ),
-          );
-        },
-        elevation: 0,
-        focusElevation: 0,
-        child: const Icon(Icons.send),
+          ),
+        ),
       ),
     );
   }

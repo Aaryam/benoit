@@ -70,7 +70,7 @@ class ContentCard extends StatelessWidget {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 5.0,),
+                      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0,),
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(articleTitle.replaceAll("_", " "),

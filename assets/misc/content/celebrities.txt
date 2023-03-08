@@ -28,7 +28,6 @@ Ben_Stiller
 Owen_Wilson
 Robert_Downey_Jr.
 Chris_Hemsworth
-Chris_Evans
 Chris_Pratt
 Zoe_Saldana
 Mark_Ruffalo
@@ -112,7 +111,6 @@ Justin_Bieber
 Selena_Gomez
 Miley_Cyrus
 Nicki_Minaj
-Drake
 Jay-Z
 Kanye_West
 Kim_Kardashian
@@ -190,7 +188,6 @@ Chris_Pine
 Brie_Larson
 Beyonce_Knowles
 Justin_Timberlake
-Timberland
 Bruno_Mars
 Billie_Eilish
 Post_Malone

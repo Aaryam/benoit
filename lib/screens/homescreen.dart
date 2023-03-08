@@ -87,7 +87,9 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       body: RefreshIndicator(
           onRefresh: () async {
-            setState(() {});
+            setState(() {
+              
+            });
           },
           child: FutureBuilder(
             future: SharedPreferences.getInstance(),

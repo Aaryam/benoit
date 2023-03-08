@@ -16,11 +16,11 @@ class PreferenceButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 3.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4.5, vertical: 4.5),
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 62, 188, 131),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(5),
         ),
         child: TextButton(
@@ -35,9 +35,6 @@ class PreferenceButton extends StatelessWidget {
             text,
             style: const TextStyle(
               fontFamily: 'Poppins',
-              // 75, 165, 141
-              // 50, 110, 94
-              // 32, 102, 83
               color: Colors.black,
               fontSize: 12,
             ),

@@ -123,7 +123,6 @@ Paul_Gauguin
 Paul_Revere
 Percy_Bysshe_Shelley
 Peter_the_Great
-Prince_Albert
 Pythagoras
 Queen_Elizabeth_II
 Queen_Isabella_I_of_Castile
@@ -158,7 +157,6 @@ Henry_Ford
 Wilbur_Wright
 Orville_Wright
 James_Watt
-Alexander_Bell
 Louis_Pasteur
 Samuel_Morse
 Robert_Fulton

@@ -35,7 +35,14 @@ class StartScreen extends StatelessWidget {
       if (snapshot.hasData) {
           SharedPreferences sharedPreferences = snapshot.data as SharedPreferences;
 
-          return LocalStorageUtilities.getPreferences(sharedPreferences).isEmpty ? const PreferencesScreen(title: 'Preferences') : const HomeScreen(title: 'Benoit');
+          print(sharedPreferences.getString('preferences'));
+
+          if (sharedPreferences.getString('preferences') == "") {
+            return const PreferencesScreen(title: 'Benoit');
+          }
+          else {
+            return const HomeScreen(title: 'Benoit');
+          }
       }
       else if (snapshot.hasError) {
         return Text(snapshot.error.toString());
