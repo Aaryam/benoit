@@ -58,7 +58,6 @@ class AIUtilities {
 }
 
 class ScrapingUtilities {
-
   static Future<String> getArticleTitle(
       SharedPreferences sharedPreferences) async {
     List<String> preferences =
@@ -80,56 +79,70 @@ class ScrapingUtilities {
     return articleTitle;
   }
 
-  static Future<List<String>> getArticleBody(article) async {
+  static Future<DOM.Document?> getArticleDocument(String article) async {
     Response response = await Client().get(
-        Uri.parse('https://en.wikipedia.org/wiki/' + article),
+        Uri.parse('https://en.wikipedia.org/wiki/$article'),
         headers: {'Charset': 'utf-8'});
+
+    if (response.statusCode == 200) {
+      return parser.parse(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static List<String> getArticleBody(String article, DOM.Document? document) {
+
     String finalResponse = "";
     String documentData = "";
     bool isBefore = false;
 
     const DOCUMENT_LENGTH = 30;
 
-    if (response.statusCode == 200) {
-      var document = parser.parse(response.body);
+    if (document != null) {
+
       List<DOM.Element> pTags = document.getElementsByTagName('p');
       List<DOM.Element> imgTags = document.getElementsByTagName('img');
       List<DOM.Element> h2Tags = document.getElementsByTagName('h2');
       List<DOM.Element> mwHeadlines = document.querySelectorAll('h2 > .mw-headline');
 
       int randomNumber = Random().nextInt(mwHeadlines.length);
-      DOM.Element sectionHeader = mwHeadlines[randomNumber].parent as DOM.Element;
+      DOM.Element sectionHeader =
+          mwHeadlines[randomNumber].parent as DOM.Element;
 
       for (DOM.Element element in document.getElementsByTagName('*')) {
         if (sectionHeader == element && !isBefore) {
           isBefore = true;
         }
 
-        if ((pTags.contains(element) || imgTags.contains(element) || h2Tags.contains(element)) &&
+        if ((pTags.contains(element) ||
+                imgTags.contains(element) ||
+                h2Tags.contains(element)) &&
             isBefore) {
           if (pTags.contains(element)) {
-            documentData += '${element.text.replaceAll(RegExp(r"\[.*?\]"), '')}\n';
+            documentData +=
+                '${element.text.replaceAll(RegExp(r"\[.*?\]"), '')}\n';
           } else if (imgTags.contains(element)) {
             // print(element);
-          }
-          else if (h2Tags.contains(element) && element != sectionHeader) {
+          } else if (h2Tags.contains(element) && element != sectionHeader) {
             break;
           }
         } else {}
       }
-      
-      return documentData.split(" ").length > DOCUMENT_LENGTH ? [documentData, sectionHeader.text] : await getArticleBody(article);
+
+      return documentData.split(" ").length > DOCUMENT_LENGTH ? [documentData, sectionHeader.text] : getArticleBody(article, document);
     }
 
     return [finalResponse, article + "#"];
   }
 
-  static Future<List<List<String>>> getMultipleStrings(int max, SharedPreferences sharedPreferences) async {
+  static Future<List<List<String>>> getMultipleStrings(
+      int max, SharedPreferences sharedPreferences) async {
     List<List<String>> multipleStrings = [];
 
     for (int i = 0; i < max; i++) {
       String articleName = await getArticleTitle(sharedPreferences);
-      List<String> articleBody = await getArticleBody(articleName);
+      List<String> articleBody = getArticleBody(articleName, await getArticleDocument(articleName));
       multipleStrings.add([articleName, articleBody[0], articleBody[1]]);
     }
 
@@ -190,7 +203,6 @@ class ScrapingUtilities {
 }
 
 class LocalStorageUtilities {
-  
   // PREFERENCES:
   // "preferenceName•textfile|preferenceName1•textfile1"
 
@@ -242,7 +254,6 @@ class LocalStorageUtilities {
   }
 
   static Future<bool> clearPreferences(SharedPreferences sharedPreferences) {
-
     print("Cleared");
 
     return sharedPreferences.setString('preferences', '');
@@ -263,19 +274,15 @@ class LocalStorageUtilities {
 }
 
 class WidgetUtilities {
-
   static List<Widget> getWidgetsFromText(text) {
     List<Widget> widgets = [];
 
     return widgets;
   }
-
 }
 
 class MathUtilities {
-
   static int getRandomRange(int min, int max) {
     return Random().nextInt(max) + min;
   }
-
 }

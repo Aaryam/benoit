@@ -16,7 +16,7 @@ class ContentCard extends StatelessWidget {
     String renderedImage = "";
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -65,8 +65,7 @@ class ContentCard extends StatelessWidget {
                         );
                       }
                     }),
-                    future: ScrapingUtilities.getImageFromArticle(
-                        articleTitle.split("#")[0])),
+                    future: ScrapingUtilities.getImageFromArticle(articleTitle.split("#")[0])),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: Padding(

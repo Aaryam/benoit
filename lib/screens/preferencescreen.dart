@@ -94,7 +94,7 @@ class PreferencesScreenState extends State<PreferencesScreen> {
                       sharedPreferences: sharedPreferences,
                       textFile: preferenceTextFile));
                 }
-
+                
                 return Wrap(
                   children: preferenceButtons,
                 );
@@ -107,32 +107,54 @@ class PreferencesScreenState extends State<PreferencesScreen> {
           ),
         ),
       ),
-      floatingActionButton: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          color: BenoitColors.jungleGreen,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomeScreen(
-                  title: 'Benoit',
-                ),
-              ),
-            );
-          },
-          child: const Text(
-            'Proceed to content!',
-            style: TextStyle(
-              fontFamily: 'Poppins',
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            height: 50,
+            decoration: BoxDecoration(
               color: Colors.white,
-              fontSize: 12,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+              onPressed: () async {
+                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                await LocalStorageUtilities.clearPreferences(sharedPreferences);
+              },
+              icon: Icon(Icons.delete, color: Colors.grey[600],),
+              tooltip: 'Clear preferences.',
             ),
           ),
-        ),
+          const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0)),
+          Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: BenoitColors.jungleGreen,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(
+                      title: 'Benoit',
+                    ),
+                  ),
+                );
+              },
+              child: const Text(
+                'Proceed to content!',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

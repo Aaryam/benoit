@@ -153,7 +153,7 @@ Highfather
 Hobgoblin
 Inhumans
 Jessica_Cruz
-Juggernaut
+Juggernaut_(character)
 Kaine_Parker
 Karnak
 Kid_Eternity
@@ -166,7 +166,7 @@ Mister_Miracle
 Negative_Man
 Nick_Fury
 Nova_Prime
-Obsidian
+Obsidian_(character)
 Parasite
 Phantom_Lady
 Power_Pack

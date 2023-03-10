@@ -3,7 +3,7 @@ import 'package:benoit/screens/homescreen.dart';
 import 'package:benoit/screens/preferencescreen.dart';
 import 'package:benoit/widgets/newscard.dart';
 import 'package:flutter/material.dart';
-
+import 'package:html/dom.dart' as DOM;
 import 'package:flutter/services.dart';
 
 class ContentScreen extends StatefulWidget {
@@ -65,16 +65,14 @@ class ContentScreenState extends State<ContentScreen>
           }
         },
       ),
-      body: FutureBuilder<List<String>>(
-        future: ScrapingUtilities.getArticleBody(widget.articleTitle),
+      body: FutureBuilder<DOM.Document?>(
+        future: ScrapingUtilities.getArticleDocument(widget.articleTitle),
         builder: (context, contentSnapshot) {
-          if (contentSnapshot.hasData) {
-            List<String> content = contentSnapshot.data as List<String>;
 
+          if (contentSnapshot.hasData) {
             return NewsCard(
               articleTitle: widget.articleTitle,
-              bodyContent: content[0],
-              sectionHeadline: content[1],
+              document: contentSnapshot.data as DOM.Document,
               imageSrc: widget.imageSrc,
             );
           } else if (contentSnapshot.hasError) {

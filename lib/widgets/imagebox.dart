@@ -14,16 +14,16 @@ class ImageBox extends StatelessWidget {
             return SizedBox(
               width: MediaQuery.of(context).size.width * 0.8,
               child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                imageSnapshot.data as String,
-                height: MediaQuery.of(context).size.height * 0.35,
-                fit: BoxFit.cover,
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    imageSnapshot.data as String,
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-              ),
-            ),
             );
           } else {
             return Container(

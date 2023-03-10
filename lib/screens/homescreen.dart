@@ -110,7 +110,7 @@ class HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 12.0, horizontal: 4.0),
+                              vertical: 6.0, horizontal: 0.0),
                           child: ContentCard(
                             sharedPreferences: sharedPreferences,
                             articleTitle: articleList[index],

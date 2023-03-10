@@ -3,20 +3,19 @@ import 'package:benoit/screens/homescreen.dart';
 import 'package:benoit/widgets/imagebox.dart';
 import 'package:benoit/widgets/scrollprogressbar.dart';
 import 'package:flutter/material.dart';
+import 'package:html/dom.dart' as DOM;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NewsCard extends StatelessWidget {
   const NewsCard(
       {Key? key,
       required this.articleTitle,
-      required this.bodyContent,
-      required this.sectionHeadline,
+      required this.document,
       required this.imageSrc})
       : super(key: key);
 
   final String articleTitle;
-  final String bodyContent;
-  final String sectionHeadline;
+  final DOM.Document document;
   final String imageSrc;
 
   @override
@@ -34,7 +33,13 @@ class NewsCard extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.99 -
                 56, // 56px is the height of bottom nav bar
-            child: ListView(
+            child: PageView.builder(
+              itemBuilder: (context, index) {
+
+                String bodyContent = ScrapingUtilities.getArticleBody(articleTitle, document)[0];
+                String sectionHeadline = ScrapingUtilities.getArticleBody(articleTitle, document)[1];
+
+                return ListView(
               controller: scrollController,
               physics: const BouncingScrollPhysics(),
               children: <Widget>[
@@ -106,6 +111,8 @@ class NewsCard extends StatelessWidget {
                   ),
                 ),
               ],
+            );
+              }, itemCount: 5,
             ),
           ),
         ],
