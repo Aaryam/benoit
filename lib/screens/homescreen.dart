@@ -53,7 +53,6 @@ class HomeScreenState extends State<HomeScreen> {
         currentIndex: currentNavIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
         ],
         onTap: (int index) {

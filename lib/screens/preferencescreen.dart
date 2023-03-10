@@ -39,7 +39,6 @@ class PreferencesScreenState extends State<PreferencesScreen> {
                 color: Colors.grey[600],
               ),
               label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.settings,
